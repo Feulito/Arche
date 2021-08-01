@@ -1,0 +1,39 @@
+version: '3.4'
+
+services:
+
+  pgadmin:
+    container_name: pgadmin_container
+    image: dpage/pgadmin4
+    environment:
+      PGADMIN_DEFAULT_EMAIL: test@arche.fr
+      PGADMIN_DEFAULT_PASSWORD: archeTest
+    volumes:
+       - pgadmin:/root/.pgadmin/storage
+    ports:
+        - 9000:80
+    restart: unless-stopped
+
+  postgres:
+    container_name: postgres_fileshare_container
+    image: postgres
+    environment:
+      POSTGRES_USER: Arche
+      POSTGRES_PASSWORD: archeTest
+      PGDATA: /data/postgres
+    volumes:
+       - postgres:/data/postgres
+    ports:
+      - 5436:5432
+    restart: unless-stopped
+
+
+  web:
+    image: ${DOCKER_REGISTRY-}front
+    build:
+      context: .
+      dockerfile: Web/Dockerfile
+
+volumes:
+  postgres:
+  pgadmin:

@@ -1,0 +1,16 @@
+version: '3.4'
+
+services:
+  web:
+    environment:
+      - ASPNETCORE_ENVIRONMENT=Development
+      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - CONNECTION_STRING=Server=postgres;Port=5432;Database=arche;Userid=Arche;Password=archeTest;
+      - DOCUMENT_DIRECTORY=/DocumentsArche
+      - SERVER_URL=https://localhost:8686
+    ports:
+      - "8686:443"
+    volumes:
+      - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
+      - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+      - ${APPDATA}\DocumentsTests\Arche:/DocumentsArche

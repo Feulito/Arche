@@ -1,0 +1,165 @@
+﻿body {
+    margin-bottom: 0px !important;
+    margin: 0;
+    padding: 0;
+    background: linear-gradient(#88ADD9, #D9B1B8);
+}
+
+.bg-dark {
+    background-color: #060606 !important;
+}
+
+.custom-nav-link:hover
+{
+    background-color: #F8F9FA;
+    color: black !important;
+    cursor: pointer;
+}
+
+.custom-header {
+    margin: 0;
+    background: linear-gradient( 180deg,rgba(51,51,54,0),rgba(79,89,187,.4)), url('https://arche-rp.fr/storage/img/bgsenat2.png');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    min-height: 600px;
+    border-bottom: 5px solid #EECAC9;
+}
+
+button#playBtn {
+    background-color: #EECAC9;
+    color: white;
+    border: none;
+    margin: 0 auto;
+    display: block;
+    transform: translateY(-50%);
+    padding: 10px 20px;
+}
+
+button#playBtn:hover {
+    background-color: #6D7EB9;
+}
+
+.list-group-item {
+    background-color: transparent;
+    border: none;
+}
+
+.custom-subnav-link {
+    font-size: 1.05rem;
+    font-weight: bold;
+}
+
+.custom-subnav-link:hover {
+    text-decoration: none;
+    color: #6D7EB9 !important;
+}
+
+.custom-dropdown-right {
+    left: 100% !important;
+    top: -25% !important;
+}
+
+.caret-right {
+    border-left: 4px solid @black;
+    border-right: 0;
+    border-top: 4px solid transparent;
+    border-bottom: 4px solid transparent;
+}
+
+.dropdown-toggle.toggle-right::after {
+    display: inline-block;
+    margin-left: .255em;
+    vertical-align: 0;
+    content: "";
+    border-top: .3em solid transparent;
+    border-bottom: .3em solid transparent;
+    border-right: 0;
+    border-left: .3em solid;
+}
+
+.custom-modal {
+    background: linear-gradient(#88ADD9, #D9B1B8);
+
+}
+
+.modalPlayBlock {
+    color: white;
+    background-color: black;
+    text-align: center;
+    margin: auto;
+    padding: 20px;
+}
+
+.modalPlayBlock:hover {
+    color: #88ADD9;
+    text-decoration: none;
+}
+
+a.modalPlayBlock i {
+    font-size: 50px;
+}
+
+.launcher-bg {
+    border: none !important;
+}
+
+.liens {
+    background-color: #151515;
+    color: #99958D;
+}
+
+.copyright {
+    background-color: #060606;
+    color: #99958D;
+}
+
+.liens h1 {
+    color: white;
+    font-weight: 700;
+    font-size: 18px;
+    padding: .2em 0;
+    margin-top: 40px;
+}
+
+.liens a {
+    color: #99958D;
+}
+
+.liens .media-link, .liens .btn {
+    color: white !important;
+}
+
+.footer {
+    position: relative !important;
+}
+
+.post-preview {
+    margin-top: 2.5rem;
+    position: relative;
+    box-shadow: 0 10px 15px rgb(0 0 0 / 40%);
+    background-color: #6d7eb9;
+    padding: 13px;
+    border-radius: 5px;
+}
+
+.video-youtube {
+    width: 100%;
+    height: 610px;
+}
+
+.card {
+    background-color: transparent;
+    border: none;
+}
+
+.discord {
+    border: none;
+    width: 100%;
+    height: 500px;
+}
+
+.shop-home img {
+    width: 100%;
+    transition: .3s;
+}

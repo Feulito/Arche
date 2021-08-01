@@ -1,0 +1,220 @@
+﻿<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"]</title>
+
+    <meta name="description" content="">
+    <meta name="theme-color" content="#3490dc">
+    <meta name="author" content="Arche">
+
+    <meta property="og:title" content="@ViewData["Title"]">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://arche-rp.fr">
+    <meta property="og:image" content="https://arche-rp.fr/storage/img/alogo.png">
+    <meta property="og:description" content="">
+    <meta property="og:site_name" content="ArcheRP">
+    <meta name="keywords" content="arche, roleplay, rp, minecraft, serveur, role-play">
+
+
+    <script src="https://cdn.jsdelivr.net/npm/vanilla-tilt/dist/vanilla-tilt.min.js" defer></script>
+
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/arche.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+
+    <script src="https://kit.fontawesome.com/21fab4a8ae.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <header>
+        <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark box-shadow">
+            <div class="container">
+                <div class="navbar-brand media align-items-center"><i class="fas fa-globe-europe fa-2x mr-2"></i> <span class="my-auto">Rejoins 1 joueur</span></div>
+                <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse">
+                    <ul class="navbar-nav ml-auto">
+                        <li class="nav-item">
+                            <a class="nav-link text-white custom-nav-link" href="/">Connexion</a>
+                        </li>
+                        @*<li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                            </li>*@
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="custom-header">
+            <div class="subBar container">
+                <ul class="list-group list-group-horizontal justify-content-between ml-auto pl-5 pt-5">
+                    <li class="list-group-item">
+                        <a class="text-white custom-subnav-link" href="/">Accueil</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-white custom-subnav-link" href="/">Règles</a>
+                    </li>
+                    <li class="list-group-item dropdown">
+                        <a href="#" class="dropdown-toggle  text-white custom-subnav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Rejoindre l'aventure</span> <span class="caret"></span></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">L'Arche, qu'est-ce que c'est ?</a>
+                            <a class="dropdown-item" href="#">L'arrivée de votre personnage sur l'Arche</a>
+                            <a class="dropdown-item" href="#">Points et compétences</a>
+                            <a class="dropdown-item" href="#">Le guide du combat</a>
+                            <a class="dropdown-item" href="#">Quotas par compétence</a>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <a href="#" class="dropdown-toggle text-white custom-subnav-link" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="true"> <span class="nav-label">Univers de jeu</span> <span class="caret"></span></a>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="#">La Génèse</a>
+                            <a class="dropdown-item" href="#">Vieux continent : Situation actuelle</a>
+
+                            <a href="#" class="dropdown-toggle toggle-right dropdown-item" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"> <span class="nav-label">Les nations</span><span class="caret-right"></span></a>
+                            <div class="dropdown-menu custom-dropdown-right">
+                                <a class="dropdown-item" href="#">La principauté de Vaan</a>
+                                <a class="dropdown-item" href="#">La cité-etat de Pont-Bleu</a>
+                                <a class="dropdown-item" href="#">Les tribus Suutas</a>
+                                <a class="dropdown-item" href="#">Proicia</a>
+                                <a class="dropdown-item" href="#">La Corporation des iles</a>
+                                <a class="dropdown-item" href="#">Le royaume de Torii</a>
+                            </div>
+
+                            <a class="dropdown-item" href="#">Religion et Mythologie</a>
+                        </div>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-white custom-subnav-link" href="/">FAQ</a>
+                    </li>
+                    <li class="list-group-item">
+                        <a class="text-white custom-subnav-link" href="/">Vote</a>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="container mt-5">
+                <div class="row align-items-center justify-content-center">
+                    <div class="logo">
+                        <a class="col-md-6 text-center" href="https://arche-rp.fr">
+                            <img src="https://arche-rp.fr/storage/img/archelogo2d.png" alt="ArcheRP" data-tilt data-tilt-scale="1.2" width="250">
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <div class="media-menu text-center mt-5 text-white">
+                <a class="text-white custom-subnav-link" href="https://www.youtube.com/channel/UCZeUUIC57Ququk9hwN8IUlA" target="_blank" rel="noreferrer noopener" title="YouTube"><i class="fab fa-youtube fa-2x"></i></a>
+                <a class="text-white custom-subnav-link" href="https://discord.com/invite/NJG8BMVP?utm_source=Discord%20Widget&amp;utm_medium=Connect" target="_blank" rel="noreferrer noopener" title="Discord"><i class="fab fa-discord fa-2x"></i></a>
+            </div>
+        </div>
+        <button id="playBtn" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">JOUER</button>
+
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    @*Modal JOUER*@
+    <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered modal-lg">
+            <div class="modal-content custom-modal">
+                <div class="modal-header launcher-bg">
+                    <h5 class="text-center" id="exampleModalLabel">Télécharger le Launcher</h5>
+                    <a href="" data-dismiss="modal" aria-label="Close"><i class="fas fa-times"></i></a>
+                </div>
+                <div class="modal-body launcher-bg justify-content-center">
+                    <div class="row">
+                        <a class="col-3 modalPlayBlock" href="http://launcheur.arche-rp.fr/launcher-arche.jar">
+                            <i class="fab fa-windows"></i>
+                            <p>Windows</p>
+                        </a>
+                        <a class="col-3 modalPlayBlock" href="http://launcheur.arche-rp.fr/launcher-arche.jar">
+                            <i class="fab fa-apple"></i>
+                            <p>Apple</p>
+                        </a>
+                        <a class="col-3 modalPlayBlock" href="http://launcheur.arche-rp.fr/launcher-arche.jar">
+                            <i class="fab fa-linux"></i>
+                            <p>Linux</p>
+                        </a>
+                    </div>
+                </div>
+                <div class="modal-footer launcher-bg">
+                    <button type="button" data-dismiss="modal" class="btn btn-primary">Fermer</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="liens">
+            <div class="container">
+                <div class="row">
+                    <div class="col-md-6">
+                        <h1>À propos</h1>
+
+                        <p>
+                            L'arche, serveur RP sur minecraft.
+
+                            <br />
+                            <a href="www.serveurs-minecraft.org">www.serveurs-minecraft.org</a>
+                        </p>
+                    </div>
+                    <div class="col-md-3 links">
+                        <h1>links utiles</h1>
+
+                        <p>Les liens utiles du serveurs sont là !</p>
+
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a href="https://arche-rp.fr/regles" class="btn btn-primary"><i class="fas fa-long-arrow-alt-right"></i> Règles</a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a href="" class="btn btn-primary"><i class="fas fa-long-arrow-alt-right"></i> Boutique</a>
+                            </li>
+                        </ul>
+                    </div>
+                    <div class="col-md-3 social">
+                        <h1>Réseaux sociaux</h1>
+
+                        <ul class="list-inline">
+                            <li class="list-inline-item">
+                                <a class="media-link" href="https://www.youtube.com/channel/UCZeUUIC57Ququk9hwN8IUlA" target="_blank" rel="noreferrer noopener" title="YouTube"><i class="fab fa-youtube fa-2x"></i></a>
+                            </li>
+                            <li class="list-inline-item">
+                                <a class="media-link" href="https://discord.com/invite/NJG8BMVP?utm_source=Discord%20Widget&amp;utm_medium=Connect" target="_blank" rel="noreferrer noopener" title="Discord"><i class="fab fa-discord fa-2x"></i></a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="copyright">
+            <div class="container">
+                <div class="row footer-bottom">
+                    <div class="col-md-6">
+                        <p>© 2021 ArcheRP - Tous droits réservés.</p>
+                    </div>
+                    <div class="col-md-6 text-right">
+                        <p>Développé par Feulito - Thème réalisé par l'Arche.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="~/js/playBtn.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>
