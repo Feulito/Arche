@@ -143,6 +143,10 @@ a.modalPlayBlock i {
     border-radius: 5px;
 }
 
+.post-preview h4 {
+    color: white;
+}
+
 .video-youtube {
     width: 100%;
     height: 610px;

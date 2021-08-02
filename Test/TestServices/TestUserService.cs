@@ -16,10 +16,10 @@ namespace Test.TestServices
     [TestClass]
     public class TestUserService
     {
-        private IUserService _userService;
+        private static IUserService _userService;
 
-        [TestInitialize]
-        public void Init()
+        [ClassInitialize]
+        public static void Init(TestContext context)
         {
             Container.ServiceCollection.AddDbContext<ArcheDbContext>(o => o.UseInMemoryDatabase("ArcheTest"), ServiceLifetime.Transient);
             Container.RegisterAllTypes(ServiceLifetime.Transient);
@@ -28,7 +28,7 @@ namespace Test.TestServices
         }
 
         [TestMethod]
-        public void TestResolve()
+        public void TestResolveService()
         {
             Assert.IsNotNull(_userService);
         }
