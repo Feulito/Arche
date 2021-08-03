@@ -1,4 +1,6 @@
-﻿@{
+﻿@model Web.Models.Site.IndexViewModel
+@{
+
 }
 
 <div class="row justify-content-center">
@@ -16,15 +18,13 @@
             <div class="post-preview shop-home">
                 <div class="shop-content p-4">
                     <h4>Articles populaires</h4>
-                    <a href="https://arche-rp.fr/shop">
-                        <img class="card-img-top" src="https://cdn.discordapp.com/attachments/748634368292945992/753993122941239406/2020-09-11_16.57.47.png" alt="">
-                    </a>
-                    <a href="https://arche-rp.fr/shop">
-                        <img class="card-img-top" src="https://cdn.discordapp.com/attachments/782285233499144223/798551622559989770/unknown.png" alt="">
-                    </a>
-                    <a href="https://arche-rp.fr/shop">
-                        <img class="card-img-top" src="http://localhost/azuriom/storage/packages/kmJPW5Ik7DWxYAmL9hL4w08b41f2W6F2b4UtMzTs.png" alt="">
-                    </a>
+
+                    @foreach (var article in Model.Articles)
+                    {
+                        <a href="https://arche-rp.fr/shop">
+                            <img class="card-img-top" src="@article.HeaderUrl" alt="">
+                        </a>
+                    }
                 </div>
             </div>
         </div>
