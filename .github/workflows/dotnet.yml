@@ -20,6 +20,6 @@ jobs:
     - name: Restore dependencies
       run: dotnet restore Arche.sln
     - name: Build
-      run: dotnet build --no-restore
+      run: dotnet build Arche.sln --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal
+      run: dotnet test Arche.sln --no-build --verbosity normal
