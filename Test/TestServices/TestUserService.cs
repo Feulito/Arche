@@ -3,6 +3,7 @@ using Core.Exceptions;
 using Core.Services.Interfaces;
 using Database;
 using IOC;
+using IOC.Data.Interfaces;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
@@ -26,6 +27,13 @@ namespace Test.TestServices
             Container.RegisterAllTypes(ServiceLifetime.Transient);
             User user = new User(); // Nécéssite un premier appel pour que sont implémentation de la DAO soit disponible dans les services du container
             _userService = Container.Resolve<IUserService>();
+        }
+
+        [TestCleanup]
+        public async Task CleanTest()
+        {
+            IAsyncDao<User> userDao = Container.Resolve<IAsyncDao<User>>();
+            await userDao.DeleteAsync(await userDao.ListAllAsync());
         }
 
         [TestMethod]
