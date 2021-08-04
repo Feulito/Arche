@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Exceptions;
 using Core.Services.Interfaces;
 using Database;
 using IOC;
@@ -39,12 +40,43 @@ namespace Test.TestServices
             
             User user = await _userService.AddUser(new User()
             {
-                UserName = "Feulito"
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr"
             });
 
             User userDb = await _userService.GetUserById(user.Id);
             Assert.AreEqual(user.Id, userDb.Id);
             Assert.AreEqual(user.UserName, userDb.UserName);
+        }
+
+        [TestMethod]
+        public async Task TestAddUserError()
+        {
+            User user = null;
+            await Assert.ThrowsExceptionAsync<UserServiceException>(async () => user = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+            }), "Un utilisateur doit avoir un pseudo et un email");
+            Assert.IsNull(user);
+
+            await Assert.ThrowsExceptionAsync<UserServiceException>(async () => user = await _userService.AddUser(new User()
+            {
+                Email = "sebastienduterte@hotmail.fr",
+            }), "Un utilisateur doit avoir un pseudo et un email");
+            Assert.IsNull(user);
+
+            User feulito = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr"
+            });
+            Assert.IsNotNull(feulito);
+
+            await Assert.ThrowsExceptionAsync<UserServiceException>(async () => user = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr"
+            }), "Il existe déjà un utilisateur avec cet email");
         }
     }
 }

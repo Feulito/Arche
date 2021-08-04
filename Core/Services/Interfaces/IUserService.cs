@@ -13,5 +13,6 @@ namespace Core.Services.Interfaces
     {
         public Task<User> AddUser(User user);
         public Task<User> GetUserById(string userId);
+        Task<User> GetUserByNameAndMail(string userName, string Email);
     }
 }

@@ -27,7 +27,8 @@ namespace Web
 
             User feulito = new User()
             {
-                UserName = "Feulito"
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr"
             };
             await userDao.AddAsync(feulito);
 

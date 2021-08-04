@@ -21,7 +21,7 @@ namespace Web
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
-            Config.ConnectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "Server=postgres;Port=5432;Database=fileshare;Userid=user;Password=password;";
+            Config.ConnectionString = Environment.GetEnvironmentVariable("CONNECTION_STRING") ?? "Server=postgres;Port=5432;Database=arche;Userid=Arche;Password=archeTest;";
             Config.DocumentsFolderPath = Environment.GetEnvironmentVariable("DOCUMENT_DIRECTORY") ?? "/DocumentsFileShare";
             Core.Config.DocumentsFolderPath = Environment.GetEnvironmentVariable("DOCUMENT_DIRECTORY") ?? "/DocumentsFileShare";
             Config.ServerUrl = Environment.GetEnvironmentVariable("SERVER_URL") ?? "https://localhost:8686";
