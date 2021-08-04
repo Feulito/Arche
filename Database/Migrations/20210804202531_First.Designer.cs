@@ -10,7 +10,7 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Database.Migrations
 {
     [DbContext(typeof(ArcheDbContext))]
-    [Migration("20210802190544_First")]
+    [Migration("20210804202531_First")]
     partial class First
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -62,6 +62,9 @@ namespace Database.Migrations
 
                     b.Property<bool>("Deleted")
                         .HasColumnType("boolean");
+
+                    b.Property<string>("Email")
+                        .HasColumnType("text");
 
                     b.Property<DateTime>("Update")
                         .HasColumnType("timestamp without time zone");

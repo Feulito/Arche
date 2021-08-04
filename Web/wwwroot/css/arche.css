@@ -168,3 +168,9 @@ a.modalPlayBlock i {
     transition: .3s;
     margin: 5px;
 }
+
+div.custom-block {
+    background-color: rgba(0,0,0,0.75);
+    padding: 20px;
+    color: whitesmoke;
+}

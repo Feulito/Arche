@@ -31,6 +31,7 @@ namespace Database.Migrations
                 {
                     Id = table.Column<string>(type: "text", nullable: false),
                     UserName = table.Column<string>(type: "text", nullable: true),
+                    Email = table.Column<string>(type: "text", nullable: true),
                     Creation = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Update = table.Column<DateTime>(type: "timestamp without time zone", nullable: false),
                     Deleted = table.Column<bool>(type: "boolean", nullable: false)

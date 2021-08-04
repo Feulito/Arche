@@ -4,24 +4,27 @@
 }
 
 <h1>S'inscrire sur l'Arche</h1>
-<form method="post">
-    <p>Pour vous inscrire il vous faudra un nom d'utilisateur ainsi qu'une adresse Email valide.</p>
-    <p>
-        Un seul compte par adresse Email est autorisé.<br />
-        Deux comptes avec le même nom d'utilisateur peuvent co-exister. Néanmoins il s'agira bien de deux joueurs différents.
-    </p>
-    <p>Aussi, chaque compte peut posséder plusieurs compte minecraft. Il ne faut donc pas re-créer un compte Arche pour ses autres comptes minecraft.</p>
+<div class="custom-block">
+    <form method="post">
+        <p>Pour vous inscrire il vous faudra un nom d'utilisateur ainsi qu'une adresse Email valide.</p>
+        <p>
+            Un seul compte par adresse Email est autorisé.<br />
+            Deux comptes avec le même nom d'utilisateur peuvent co-exister. Néanmoins il s'agira bien de deux joueurs différents.
+        </p>
+        <p>Aussi, chaque compte peut posséder plusieurs compte minecraft. Il ne faut donc pas re-créer un compte Arche pour ses autres comptes minecraft.</p>
 
-    <div class="form-group">
-        <label for="username">Nom d'utilisateur</label>
-        <input class="form-control" id="username" name="username" type="text" placeholder="Pseudonyme" />
-    </div>
+        <div class="form-group">
+            <label for="username">Nom d'utilisateur</label>
+            <input class="form-control" id="username" name="username" type="text" placeholder="Pseudonyme" />
+        </div>
 
-    <div class="form-group">
-        <label for="email">Adresse Email</label>
-        <input class="form-control" id="email" name="email" type="email" placeholder="Exemple : archerp@gmail.com" />
-        <small id="emailHelp" class="form-text text-muted">Un seul compte Arche par Email. Nous ne partagerons aucune de vos données.</small>
-    </div>
+        <div class="form-group">
+            <label for="email">Adresse Email</label>
+            <input class="form-control" id="email" name="email" type="email" placeholder="Exemple : archerp@gmail.com" />
+            <small id="emailHelp" class="form-text text-muted">Un seul compte Arche par Email. Nous ne partagerons aucune de vos données.</small>
+        </div>
 
-    <button type="submit" class="btn btn-primary">S'inscrire</button>
-</form>
+        <button type="submit" class="btn btn-primary d-block ml-auto">S'inscrire</button>
+    </form>
+</div>
+
