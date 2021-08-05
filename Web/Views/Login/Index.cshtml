@@ -1,0 +1,38 @@
+﻿@model Web.Models.Site.LoginViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="custom-block">
+    <h1>Se connecter à l'Arche</h1>
+
+    <form method="post">
+
+        @if (Model.ConnexionFailed)
+        {
+            <div class="alert-danger text-center">
+                <h4>Erreur de connexion :</h4>
+                <p>@Model.ErrorMessage</p>
+            </div>
+        }
+
+        <div class="form-group">
+            <label for="email">Adresse E-mail</label>
+            <input class="form-control" type="email" id="email" name="email" required />
+            <small class="form-text text-muted">Une adresse E-mail est associée à un compte unique.</small>
+        </div>
+
+        <div class="form-group">
+            <label for="pass">Mot de passe</label>
+            <input class="form-control" type="password" id="pass" name="pass" required />
+        </div>
+
+        <div class="form-group">
+            @Html.CheckBox("Persistent", false, new{ @class="form-check-inline", @id="persistent" })
+            <label for="persistent">Rester connecter</label>
+            <small class="form-text text-muted">La persistence de connexion dure un mois.</small>
+        </div>
+
+        <button type="submit" class="btn btn-primary d-block m-auto">Connexion</button>
+    </form>
+</div>

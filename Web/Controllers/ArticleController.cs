@@ -2,6 +2,7 @@
 using Core.Models.ViewModels;
 using Core.Services.Interfaces;
 using Core.Utils;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -23,6 +24,7 @@ namespace Web.Controllers
         }
 
         [HttpGet]
+        [Authorize]
         public async Task<IActionResult> Index(string articleId)
         {
             ArticleViewModel articleViewModel = MapperUtility.Map(await _articleService.GetArticleById(articleId), new ArticleViewModel());
