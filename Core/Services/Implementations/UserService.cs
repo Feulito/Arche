@@ -56,8 +56,8 @@ namespace Core.Services.Implementations
 
         private async Task CheckUserInfos(User user)
         {
-            if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.Email))
-                throw new UserServiceException("Un utilisateur doit avoir un pseudo et un email.");
+            if (string.IsNullOrWhiteSpace(user.UserName) || string.IsNullOrWhiteSpace(user.Email) || string.IsNullOrWhiteSpace(user.Password))
+                throw new UserServiceException("Un utilisateur doit avoir un pseudo, un Email et un mot de passe.");
             if ((await GetUserByMail(user.Email)) != null)
                 throw new UserServiceException("Il existe déjà un utilisateur avec cet email.");
         }
@@ -65,7 +65,7 @@ namespace Core.Services.Implementations
         public async Task<User> SignIn(string email, string pass)
         {
             User user = await GetUserByMail(email);
-            if (user == null || !HasherUtility.CheckHash(pass, user.Password, user.Salt)) throw new AuthenticationException("Identifiants incorrects.");
+            if (user == null || string.IsNullOrWhiteSpace(pass) || !HasherUtility.CheckHash(pass, user.Password, user.Salt)) throw new AuthenticationException("Identifiants incorrects.");
             return user;
         }
     }

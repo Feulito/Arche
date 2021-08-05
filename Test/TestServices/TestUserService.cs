@@ -1,6 +1,8 @@
 ﻿using Core.Entities;
 using Core.Exceptions;
+using Core.Models.FormData;
 using Core.Services.Interfaces;
+using Core.Utils;
 using Database;
 using IOC;
 using IOC.Data.Interfaces;
@@ -10,6 +12,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -45,16 +48,59 @@ namespace Test.TestServices
         [TestMethod]
         public async Task TestAddUser()
         {
-            
+
+            HashObject hashObject = HasherUtility.Hash("test");
             User user = await _userService.AddUser(new User()
             {
                 UserName = "Feulito",
-                Email = "sebastienduterte@hotmail.fr"
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
             });
 
             User userDb = await _userService.GetUserById(user.Id);
             Assert.AreEqual(user.Id, userDb.Id);
             Assert.AreEqual(user.UserName, userDb.UserName);
+            Assert.AreEqual(user.Password, userDb.Password);
+            Assert.AreEqual(user.Salt, userDb.Salt);
+        }
+
+        [TestMethod]
+        public async Task TestGetUserByMail()
+        {
+            HashObject hashObject = HasherUtility.Hash("test");
+            User user = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            });
+
+            User userDb = await _userService.GetUserByMail(user.Email);
+            Assert.AreEqual(user.Id, userDb.Id);
+            Assert.AreEqual(user.UserName, userDb.UserName);
+            Assert.AreEqual(user.Password, userDb.Password);
+            Assert.AreEqual(user.Salt, userDb.Salt);
+        }
+
+        [TestMethod]
+        public async Task TestGetUserByUserNameAndMail()
+        {
+            HashObject hashObject = HasherUtility.Hash("test");
+            User user = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            });
+
+            User userDb = await _userService.GetUserByNameAndMail(user.UserName, user.Email);
+            Assert.AreEqual(user.Id, userDb.Id);
+            Assert.AreEqual(user.UserName, userDb.UserName);
+            Assert.AreEqual(user.Password, userDb.Password);
+            Assert.AreEqual(user.Salt, userDb.Salt);
         }
 
         [TestMethod]
@@ -64,19 +110,29 @@ namespace Test.TestServices
             await Assert.ThrowsExceptionAsync<UserServiceException>(async () => user = await _userService.AddUser(new User()
             {
                 UserName = "Feulito",
-            }), "Un utilisateur doit avoir un pseudo et un email");
+            }), "Un utilisateur doit avoir un pseudo, un Email et un mot de passe.");
             Assert.IsNull(user);
 
             await Assert.ThrowsExceptionAsync<UserServiceException>(async () => user = await _userService.AddUser(new User()
             {
                 Email = "sebastienduterte@hotmail.fr",
-            }), "Un utilisateur doit avoir un pseudo et un email");
+            }), "Un utilisateur doit avoir un pseudo, un Email et un mot de passe.");
             Assert.IsNull(user);
 
+            await Assert.ThrowsExceptionAsync<UserServiceException>(async () => user = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr",
+            }), "Un utilisateur doit avoir un pseudo, un Email et un mot de passe.");
+            Assert.IsNull(user);
+
+            HashObject hashObject = HasherUtility.Hash("test");
             User feulito = await _userService.AddUser(new User()
             {
                 UserName = "Feulito",
-                Email = "sebastienduterte@hotmail.fr"
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
             });
             Assert.IsNotNull(feulito);
 
@@ -85,6 +141,28 @@ namespace Test.TestServices
                 UserName = "Feulito",
                 Email = "sebastienduterte@hotmail.fr"
             }), "Il existe déjà un utilisateur avec cet email");
+        }
+
+        [TestMethod]
+        public async Task TestSignIn()
+        {
+            HashObject hashObject = HasherUtility.Hash("test");
+            User feulito = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            });
+
+            User user = await _userService.SignIn("sebastienduterte@hotmail.fr", "test");
+            Assert.IsNotNull(user);
+
+            await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn("truc", "test"), "Identifiants incorrects.");
+            await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn("sebastienduterte@hotmail.fr", "machin"), "Identifiants incorrects.");
+            await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn(null, "machin"), "Identifiants incorrects.");
+            await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn("sebastienduterte@hotmail.fr", null), "Identifiants incorrects.");
+            await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn(null, null), "Identifiants incorrects.");
         }
     }
 }
