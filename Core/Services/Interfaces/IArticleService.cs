@@ -1,4 +1,5 @@
 ﻿using Core.Entities.Site;
+using Core.Models.FormData;
 using IOC.Attributes;
 using System;
 using System.Collections.Generic;
@@ -16,7 +17,7 @@ namespace Core.Services.Interfaces
         /// </summary>
         /// <param name="article">L'article à ajouter</param>
         /// <returns>L'article ajouté</returns>
-        Task<Article> AddArticle(Article article);
+        Task<Article> AddArticle(AddArticleFormData article);
 
         /// <summary>
         /// Récupère tous les articles non supprimés

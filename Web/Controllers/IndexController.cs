@@ -1,5 +1,5 @@
 ﻿using Core.Entities.Site;
-using Core.Models;
+using Core.Models.ViewModels;
 using Core.Services.Interfaces;
 using Core.Utils;
 using Microsoft.AspNetCore.Mvc;

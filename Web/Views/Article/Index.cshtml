@@ -1,0 +1,10 @@
+﻿@model Web.Models.Site.ArticlePageViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+<div class="custom-block">
+    <h1>@Model.Article.Title</h1>
+    <div>@Html.Raw(Model.Article.Content)</div>
+    <small class="form-text text-muted">Rédigé par @Model.Auteur.UserName</small>
+</div>

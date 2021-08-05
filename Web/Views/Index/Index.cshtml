@@ -21,8 +21,8 @@
 
                     @foreach (var article in Model.Articles)
                     {
-                        <a href="https://arche-rp.fr/shop">
-                            <img class="card-img-top" src="@article.HeaderUrl" alt="">
+                        <a href="/Article?articleId=@article.Id">
+                            <img class="card-img-top" src="@article.HeaderUrl" alt="@article.Title">
                         </a>
                     }
                 </div>

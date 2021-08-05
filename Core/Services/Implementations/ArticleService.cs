@@ -1,5 +1,8 @@
 ﻿using Core.Entities.Site;
+using Core.Exceptions;
+using Core.Models.FormData;
 using Core.Services.Interfaces;
+using Core.Utils;
 using IOC.Data.Implementations;
 using IOC.Data.Interfaces;
 using System;
@@ -19,11 +22,28 @@ namespace Core.Services.Implementations
             _articleDao = articleDao;
         }
 
-        public async Task<Article> AddArticle(Article article)
+        public async Task<Article> AddArticle(AddArticleFormData articleFormData)
         {
-            if (article == null) throw new ArgumentNullException("article", "L'article à ajouter ne doit pas être null");
+            CheckArticleFormDataInfos(articleFormData);
+            Article article = new Article()
+            {
+                Title = articleFormData.Title,
+                HeaderUrl = articleFormData.HeaderUrl,
+                Content = articleFormData.Content,
+                AuteurId = articleFormData.AuteurId
+            };
+
             await _articleDao.AddAsync(article);
             return article;
+        }
+
+        private void CheckArticleFormDataInfos(AddArticleFormData articleFormData)
+        {
+            if (articleFormData == null) throw new ArgumentNullException("L'ajout d'un article null n'est pas autorisée.");
+            if (string.IsNullOrWhiteSpace(articleFormData.AuteurId)) throw new ArticleServiceException("Un article doit avoir un auteur.");
+            if (string.IsNullOrWhiteSpace(articleFormData.Content)) throw new ArticleServiceException("Un article doit avoir un contenu.");
+            if (string.IsNullOrWhiteSpace(articleFormData.HeaderUrl)) throw new ArticleServiceException("Un article doit avoir une image d'entête.");
+            if (string.IsNullOrWhiteSpace(articleFormData.Title)) throw new ArticleServiceException("Un article doit avoir un Titre.");
         }
 
         public async Task<Article> GetArticleById(string articleId)
