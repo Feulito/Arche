@@ -1,4 +1,6 @@
 ﻿using Core.Entities.Site;
+using Core.Exceptions;
+using Core.Models.FormData;
 using Core.Services.Interfaces;
 using Database;
 using IOC;
@@ -45,7 +47,7 @@ namespace Test.TestServices
         [TestMethod]
         public async Task TestAddArticle()
         {
-            Article article = new Article()
+            AddArticleFormData article = new AddArticleFormData()
             {
                 Title = "Un titre",
                 HeaderUrl = "https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png",
@@ -54,13 +56,10 @@ namespace Test.TestServices
             };
             Article newArticle = await _articleService.AddArticle(article);
             Assert.IsNotNull(newArticle);
-            Assert.AreEqual(article.Id, newArticle.Id);
-            Assert.AreEqual(article.AuteurId, newArticle.AuteurId);
-            Assert.AreEqual(article.Title, newArticle.Title);
-            Assert.AreEqual(article.HeaderUrl, newArticle.HeaderUrl);
-            Assert.AreEqual(article.Content, newArticle.Content);
-            Assert.AreEqual(DateTime.Now.Date, newArticle.Creation.Date);
-            Assert.IsFalse(newArticle.Deleted);
+            Assert.AreEqual("unId", newArticle.AuteurId);
+            Assert.AreEqual("Un titre", newArticle.Title);
+            Assert.AreEqual("https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png", newArticle.HeaderUrl);
+            Assert.AreEqual("<p>Voici un paragraphe de mon article !</p>", newArticle.Content);
 
             Article dbArticle = await _articleService.GetArticleById(newArticle.Id);
             Assert.IsNotNull(dbArticle);
@@ -78,7 +77,7 @@ namespace Test.TestServices
         {
             for (int i = 0; i < 100; i++)
             {
-                Article article = new Article()
+                AddArticleFormData article = new AddArticleFormData()
                 {
                     Title = $"Article {i}",
                     HeaderUrl = $"Header {i}",
@@ -107,7 +106,7 @@ namespace Test.TestServices
         {
             for (int i = 0; i < 100; i++)
             {
-                Article article = new Article()
+                AddArticleFormData article = new AddArticleFormData()
                 {
                     Title = $"Article {i}",
                     HeaderUrl = $"Header {i}",
@@ -131,9 +130,20 @@ namespace Test.TestServices
         }
 
         [TestMethod]
-        public async Task TestAddWithNullArticle()
+        public async Task TestAddArticleErrors()
         {
-            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _articleService.AddArticle(null));
+            await Assert.ThrowsExceptionAsync<ArgumentNullException>(async () => await _articleService.AddArticle(null), "L'ajout d'un article null n'est pas autorisée.");
+            AddArticleFormData datas = new AddArticleFormData();
+            await Assert.ThrowsExceptionAsync<ArticleServiceException>(async () => await _articleService.AddArticle(datas), "Un article doit avoir un auteur.");
+            datas.AuteurId = "Un auteur";
+            await Assert.ThrowsExceptionAsync<ArticleServiceException>(async () => await _articleService.AddArticle(datas), "Un article doit avoir un contenu.");
+            datas.Content = "<p>Truc</p>";
+            await Assert.ThrowsExceptionAsync<ArticleServiceException>(async () => await _articleService.AddArticle(datas), "Un article doit avoir une image d'entête.");
+            datas.HeaderUrl = "une image entete";
+            await Assert.ThrowsExceptionAsync<ArticleServiceException>(async () => await _articleService.AddArticle(datas), "Un article doit avoir un titre.");
+            datas.Title = "Un titre";
+            Article article = await _articleService.AddArticle(datas);
+            Assert.IsNotNull(article);
         }
     }
 }
