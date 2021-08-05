@@ -1,5 +1,6 @@
 ﻿using Core.Entities;
 using Core.Entities.Site;
+using Core.Utils;
 using IOC;
 using IOC.Data.Interfaces;
 using System;
@@ -25,10 +26,13 @@ namespace Web
 
             if ((await userDao.ListAllAsync()).Any()) return;
 
+            HashObject hashObject = HasherUtility.Hash("test");
             User feulito = new User()
             {
                 UserName = "Feulito",
-                Email = "sebastienduterte@hotmail.fr"
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
             };
             await userDao.AddAsync(feulito);
 

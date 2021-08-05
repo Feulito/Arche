@@ -89,5 +89,11 @@ namespace Web.Controllers
             if (!string.IsNullOrWhiteSpace(returnUrl)) return RedirectPermanent(returnUrl);
             return RedirectToAction("Index", "Index");
         }
+
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            return RedirectToAction("Index", "Index");
+        }
     }
 }

@@ -8,5 +8,7 @@ namespace Web.Models.Site
     public class RegisterViewModel
     {
         public string Title = "Arche - S'inscrire";
+        public string ErrorMessage { get; set; }
+        public bool RegisterationFailed => !string.IsNullOrWhiteSpace(ErrorMessage);
     }
 }
