@@ -46,7 +46,6 @@ namespace Web.Controllers
         [Authorize]
         public async Task<IActionResult> AddArticle(string title, string content, string authorId)
         {
-            // test
             return View();
         }
 
