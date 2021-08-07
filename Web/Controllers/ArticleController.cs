@@ -37,7 +37,7 @@ namespace Web.Controllers
             ArticlePageViewModel viewModel = new ArticlePageViewModel()
             {
                 Article = articleViewModel,
-                Auteur = await _userService.GetUserById(articleViewModel.AuteurId),
+                Auteur = articleViewModel.Auteur,
                 User = user
             };
             return View(viewModel);

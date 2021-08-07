@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Core.Entities;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +13,6 @@ namespace Core.Models.ViewModels
         public string Title { get; set; }
         public string HeaderUrl { get; set; }
         public string Content { get; set; }
-        public string AuteurId { get; set; }
+        public User Auteur { get; set; }
     }
 }

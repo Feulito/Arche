@@ -7,7 +7,7 @@
     @if (@Model.UserAuthenticated)
     {
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Profile/MyProfile?id=@Model.User.Id">Profil</a>
+            <a class="nav-link text-white custom-nav-link" href="/Profile/EditProfile?id=@Model.User.Id">Profil</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-white custom-nav-link" href="/Login/Logout">Déconnexion</a>
@@ -28,5 +28,5 @@
     <h1>@Model.Article.Title</h1>
     <div class="text-center justify-content-center"><img class="w-100" src="@Model.Article.HeaderUrl" alt="@Model.Article.Title" /></div>
     <div>@Html.Raw(Model.Article.Content)</div>
-    <small class="form-text text-muted">Rédigé par @Model.Auteur.UserName</small>
+    <small class="form-text text-muted">Rédigé par <a href="/Profil/Index?id=@Model.Auteur.Id" class="text-white-50">@Model.Auteur.UserName</a></small>
 </div>
