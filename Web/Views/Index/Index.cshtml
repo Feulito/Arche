@@ -16,10 +16,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Login/Index">Connexion</a>
+            <a class="nav-link text-white custom-nav-link" href="/Login">Connexion</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Register/Index">Inscription</a>
+            <a class="nav-link text-white custom-nav-link" href="/Register">Inscription</a>
         </li>
     }
 }
@@ -39,6 +39,12 @@
             <div class="post-preview shop-home">
                 <div class="shop-content p-4">
                     <h4>Articles populaires</h4>
+                    @if (!Model.Articles.Any())
+                    {
+                        <div class="text-center text-white">
+                            Aucun article n'a été publié.
+                        </div>
+                    }
 
                     @foreach (var article in Model.Articles)
                     {
@@ -61,3 +67,12 @@
         </div>
     </div>
 </div>
+
+@section LiensUtiles {
+    @if (Model?.User?.IsAtLeastAdmin() ?? false)
+    {
+        <li class="list-inline-item">
+            <a href="/AdminPanel/Index/Index" class="text-white-50">Panneau d'Administration</a>
+        </li>
+    }
+}

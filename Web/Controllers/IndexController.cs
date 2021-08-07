@@ -30,7 +30,7 @@ namespace Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            await DataInitializer.Initialize(false);
+            await DataInitializer.Initialize(clear: false);
             UserViewModel user = User.Identity.IsAuthenticated ? await ConnectionHelper.GetRights(User, _userService) : null;
 
             List<ArticleViewModel> articles = MapperUtility.Map<Article, ArticleViewModel>((await _articleService.GetArticles(NbArticles)).OrderBy(a => a.Creation));

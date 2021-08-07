@@ -18,6 +18,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\AdminPanel\Models\" />
     <Folder Include="Models\Forum\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>

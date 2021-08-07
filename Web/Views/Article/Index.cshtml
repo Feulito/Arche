@@ -16,10 +16,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Login/Index">Connexion</a>
+            <a class="nav-link text-white custom-nav-link" href="/Login">Connexion</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Register/Index">Inscription</a>
+            <a class="nav-link text-white custom-nav-link" href="/Register">Inscription</a>
         </li>
     }
 }
@@ -30,3 +30,12 @@
     <div>@Html.Raw(Model.Article.Content)</div>
     <small class="form-text text-muted">Rédigé par <a href="/Profil/Index?id=@Model.Auteur.Id" class="text-white-50">@Model.Auteur.UserName</a></small>
 </div>
+
+@section LiensUtiles {
+    @if (Model?.User?.IsAtLeastAdmin() ?? false)
+    {
+        <li class="list-inline-item">
+            <a href="/AdminPanel/Index/Index" class="text-white-50">Panneau d'Administration</a>
+        </li>
+    }
+}
