@@ -183,7 +183,6 @@
                             <li class="list-inline-item">
                                 <a class="media-link" href="https://discord.com/invite/NJG8BMVP?utm_source=Discord%20Widget&amp;utm_medium=Connect" target="_blank" rel="noreferrer noopener" title="Discord"><i class="fab fa-discord fa-2x"></i></a>
                             </li>
-                            @RenderSection("LiensUtiles", false)
                         </ul>
                     </div>
                 </div>
@@ -194,10 +193,13 @@
         <div class="copyright">
             <div class="container">
                 <div class="row footer-bottom">
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         <p>© 2021 ArcheRP - Tous droits réservés.</p>
                     </div>
-                    <div class="col-md-6 text-right">
+                    <div class="col-md-4 text-center">
+                        @RenderSection("LiensAdmin", false)
+                    </div>
+                    <div class="col-md-4 text-right ml-auto">
                         <p>Développé par Feulito - Thème réalisé par l'Arche.</p>
                     </div>
                 </div>

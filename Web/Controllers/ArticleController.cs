@@ -10,7 +10,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Threading.Tasks;
 using Web.Helpers;
-using Web.Models.Site;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -41,13 +41,6 @@ namespace Web.Controllers
                 User = user
             };
             return View(viewModel);
-        }
-
-        [Authorize]
-        public async Task<IActionResult> AddArticle(string title, string content, string authorId)
-        {
-
-            return View();
         }
 
     }

@@ -1,10 +1,14 @@
-﻿@{
+﻿@model Web.Areas.AdminPanel.Models.IndexViewModel
+@{
     ViewData["Title"] = "Panneau d'administration";
 }
 
 @section Navigation {
     <li class="nav-item">
         <a class="nav-link text-white custom-nav-link" href="/Login/Index">Retour au site</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">@Model.User.UserName</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-white custom-nav-link" href="/Login/Logout">Déconnexion</a>
@@ -15,8 +19,8 @@
     <p>Hello world !</p>
 </div>
 
-@section LiensUtiles {
+@section LiensAdmin {
     <li class="list-inline-item">
-        <a href="" class="btn btn-primary"><i class="fas fa-long-arrow-alt-right"></i> Panneau d'Administration</a>
+        <a href="/AdminPanel/Index/Index" class="text-white-50">Panneau d'Administration</a>
     </li>
 }

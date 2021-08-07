@@ -174,3 +174,7 @@ div.custom-block {
     padding: 20px;
     color: whitesmoke;
 }
+
+.textarea-article {
+    height: 700px !important;
+}
