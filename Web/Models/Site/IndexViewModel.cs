@@ -10,5 +10,7 @@ namespace Web.Models.Site
     {
         public string Title => "Arche - Accueil";
         public List<ArticleViewModel> Articles { get; set; } = new List<ArticleViewModel>();
+        public UserViewModel User { get; set; }
+        public bool UserAuthenticated => User != null;
     }
 }

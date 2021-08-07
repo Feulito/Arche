@@ -3,6 +3,27 @@
     ViewData["Title"] = Model.Title;
 }
 
+@section Navigation {
+    @if (@Model.UserAuthenticated)
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">Profil</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Login/Logout">Déconnexion</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Login/">Connexion</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Register/">Inscription</a>
+        </li>
+    }
+}
+
 <div class="custom-block">
     <h1>@Model.Article.Title</h1>
     <div class="text-center justify-content-center"><img class="w-100" src="@Model.Article.HeaderUrl" alt="@Model.Article.Title" /></div>

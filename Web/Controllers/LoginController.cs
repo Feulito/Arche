@@ -66,7 +66,7 @@ namespace Web.Controllers
                 //AllowRefresh = <bool>,
                 // Refreshing the authentication session should be allowed.
 
-                ExpiresUtc = DateTimeOffset.UtcNow.AddMonths(1),
+                ExpiresUtc = loginFormData.Persistent ? DateTimeOffset.UtcNow.AddMonths(1) : DateTimeOffset.UtcNow.AddHours(1),
                 // The time at which the authentication ticket expires. A 
                 // value set here overrides the ExpireTimeSpan option of 
                 // CookieAuthenticationOptions set with AddCookie.

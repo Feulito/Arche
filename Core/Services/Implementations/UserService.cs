@@ -31,7 +31,11 @@ namespace Core.Services.Implementations
 
         public async Task<User> GetUserById(string userId)
         {
-            return await _userDao.GetByIdAsync(userId);
+            ISpecification<User> spec = new Specification<User>()
+            {
+                Criteria = u => !u.Deleted && u.Id == userId
+            };
+            return await _userDao.FirstOrDefaultAsync(spec);
         }
 
         public async Task<User> GetUserByNameAndMail(string userName, string email)
@@ -40,7 +44,7 @@ namespace Core.Services.Implementations
             {
                 Criteria = u => !u.Deleted && u.UserName == userName && u.Email == email
             };
-            return (await _userDao.ListAsync(spec)).FirstOrDefault();
+            return await _userDao.FirstOrDefaultAsync(spec);
         }
 
         public async Task<User> GetUserByMail(string email)
@@ -50,7 +54,7 @@ namespace Core.Services.Implementations
             {
                 Criteria = u => !u.Deleted &&  u.Email == email
             };
-            return (await _userDao.ListAsync(spec)).FirstOrDefault();
+            return await _userDao.FirstOrDefaultAsync(spec);
         }
 
         private async Task CheckUserInfos(User user)

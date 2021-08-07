@@ -13,5 +13,7 @@ namespace Web.Models.Site
         public string Title => Article?.Title ?? "Article";
         public ArticleViewModel Article { get; set; }
         public User Auteur { get; set; }
+        public UserViewModel User { get; set; }
+        public bool UserAuthenticated => User != null;
     }
 }

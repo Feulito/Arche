@@ -7,7 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Authentication;
 using System.Threading.Tasks;
+using Web.Helpers;
 using Web.Models.Site;
 
 namespace Web.Controllers
@@ -27,16 +29,21 @@ namespace Web.Controllers
         [Authorize]
         public async Task<IActionResult> Index(string articleId)
         {
+            UserViewModel user = await ConnectionHelper.GetRights(User, _userService);
+            if (user == null) return RedirectToActionPermanent("Index", "Index");
+
             ArticleViewModel articleViewModel = MapperUtility.Map(await _articleService.GetArticleById(articleId), new ArticleViewModel());
             if (articleViewModel.Content.Contains("<script")) throw new ArticleServiceException("Pour des raisons de sécurité le code javascript n'est pas autorisé dans les articles !");
             ArticlePageViewModel viewModel = new ArticlePageViewModel()
             {
                 Article = articleViewModel,
-                Auteur = await _userService.GetUserById(articleViewModel.AuteurId)
+                Auteur = await _userService.GetUserById(articleViewModel.AuteurId),
+                User = user
             };
             return View(viewModel);
         }
 
+        [Authorize]
         public async Task<IActionResult> AddArticle(string title, string content, string authorId)
         {
 

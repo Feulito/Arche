@@ -3,6 +3,15 @@
     ViewData["Title"] = Model.Title;
 }
 
+@section Navigation {
+    <li class="nav-item">
+        <a class="nav-link text-white custom-nav-link" href="/Login/">Connexion</a>
+    </li>
+    <li class="nav-item">
+        <a class="nav-link text-white custom-nav-link" href="/Register/">Inscription</a>
+    </li>
+}
+
 <div class="custom-block">
     <h1>Se connecter à l'Arche</h1>
 
@@ -28,7 +37,7 @@
         </div>
 
         <div class="form-group">
-            @Html.CheckBox("Persistent", false, new{ @class="form-check-inline", @id="persistent" })
+            @Html.CheckBox("Persistent", false, new { @class = "form-check-inline", @id = "persistent" })
             <label for="persistent">Rester connecter</label>
             <small class="form-text text-muted">La persistence de connexion dure un mois.</small>
         </div>
