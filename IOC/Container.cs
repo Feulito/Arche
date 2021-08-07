@@ -15,7 +15,7 @@ namespace IOC
         private static IServiceProvider _provider;
 
         /// <summary>
-        /// Obtient ou définit la collection de services
+        /// Get or set Service collection used as _container.
         /// </summary>
         public static IServiceCollection ServiceCollection
         {
@@ -28,7 +28,7 @@ namespace IOC
         }
 
         /// <summary>
-        /// Obtient ou définit le service provider
+        /// Get or set the service provider.
         /// </summary>
         public static IServiceProvider Provider
         {
@@ -37,11 +37,28 @@ namespace IOC
         }
 
 
+        private static Assembly[] _interfacesAssemblies;
+        public static Assembly[] InterfacesAssemblies
+        {
+            get => _interfacesAssemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+            set => _interfacesAssemblies = value;
+        }
+
+
+        private static Assembly[] _implementationsAssemblies;
+        public static Assembly[] ImplementationsAssemblies
+        {
+            get => _implementationsAssemblies ??= AppDomain.CurrentDomain.GetAssemblies();
+            set => _implementationsAssemblies = value;
+        }
+
+
+
 
         /// <summary>
-        /// Réduit la dépendance existante de type T
+        /// Resolve existing dependency
         /// </summary>
-        /// <typeparam name="T">Type de dépendance</typeparam>
+        /// <typeparam name="T"></typeparam>
         /// <returns></returns>
         public static T Resolve<T>()
         {
@@ -49,9 +66,9 @@ namespace IOC
         }
 
         /// <summary>
-        /// Réduit la dépendance existante d'un type donné
+        /// Resolve an existing dependency
         /// </summary>
-        /// <param name="type">Type de la dépendance</param>
+        /// <param name="type"></param>
         /// <returns></returns>
         public static object Resolve(Type type)
         {
@@ -59,16 +76,19 @@ namespace IOC
         }
 
         /// <summary>
-        /// Enregistre tous les types avec l'attribut [Resolvable]
+        /// Register all dependencies with [IocResolved] attribute
         /// </summary>
-        public static void RegisterAllTypes(ServiceLifetime lifetime = ServiceLifetime.Singleton)
+        public static void RegisterAllTypes(ServiceLifetime defaultLifetime = ServiceLifetime.Singleton)
         {
-            Assembly[] assemblies = AppDomain.CurrentDomain.GetAssemblies();
-            foreach (Assembly a in assemblies)
+            foreach (Assembly a in InterfacesAssemblies)
             {
                 IEnumerable<Type> types = a.GetLoadableTypes().Where(t => t.GetCustomAttributes(typeof(ResolvableAttribute), true).Any());
                 foreach (Type t in types)
                 {
+
+                    ResolvableAttribute resolvableAttribute = t.GetCustomAttributes(typeof(ResolvableAttribute), true).First() as ResolvableAttribute;
+                    ServiceLifetime lifetime = resolvableAttribute?.ServiceLifetime ?? defaultLifetime;
+
                     if (t.IsGenericType)
                     {
                         RegisterGenericType(t, lifetime);
@@ -82,8 +102,8 @@ namespace IOC
         }
 
         /// <summary>
-        /// Enregistre tous les type dérivés d'un type générique
-        /// Les types générique n'acceptent qu'un argument générique
+        /// Register all constructed types derived from generic type.
+        /// Only support generic types with one generic argument !
         /// </summary>
         /// <param name="type"></param>
         /// <param name="lifetime"></param>
@@ -96,7 +116,7 @@ namespace IOC
 
             Type argumentDefinition = type.GetGenericArguments()[0].GetGenericParameterConstraints()[0];
 
-            List<Type> foundArguments = AppDomain.CurrentDomain.GetAssemblies().SelectMany(s => s.GetLoadableTypes()).Where(p => !p.IsGenericType && !p.IsInterface && argumentDefinition.IsAssignableFrom(p)).ToList();
+            List<Type> foundArguments = ImplementationsAssemblies.SelectMany(s => s.GetLoadableTypes()).Where(p => !p.IsGenericType && !p.IsInterface && argumentDefinition.IsAssignableFrom(p)).ToList();
             foreach (Type t in foundArguments)
             {
                 Type constructedGenericType = type.MakeGenericType(t);
@@ -109,34 +129,32 @@ namespace IOC
         }
 
         /// <summary>
-        ///  Retourne une impléméntation d'un type générique disponible dans les assemblies disponibles
+        ///  Search and return a concrete generic implementation of genericType in all available assemblies.
         /// </summary>
         /// <param name="genericType"></param>
         /// <param name="argument"></param>
         /// <returns></returns>
         private static Type SearchGenericImplementation(Type genericType, Type argument)
         {
-            Type implementation = AppDomain.CurrentDomain.GetAssemblies()
-                                                    .SelectMany(s => s.GetLoadableTypes())
-                                                    .FirstOrDefault(p => p.IsGenericType && !p.IsInterface && !p.IsAbstract && genericType.IsAssignableFrom(p.TryMakeGenericType(argument)));
+            Type implementation = ImplementationsAssemblies.SelectMany(s => s.GetLoadableTypes())
+                                                            .FirstOrDefault(p => p.IsGenericType && !p.IsInterface && !p.IsAbstract && genericType.IsAssignableFrom(p.TryMakeGenericType(argument)));
             implementation = implementation?.MakeGenericType(argument);
             return implementation;
         }
 
         /// <summary>
-        /// Retourne une implémentation concrete d'un type non générique disponible dans toutes les assemblies
+        /// Search and return a non generic concrete implementation of type in all available assemblies.
         /// </summary>
         /// <param name="type"></param>
         /// <returns></returns>
         private static Type SearchNonGenericImplementation(Type type)
         {
-            return AppDomain.CurrentDomain.GetAssemblies()
-                                                    .SelectMany(s => s.GetLoadableTypes())
-                                                    .FirstOrDefault(p => !p.IsGenericType && !p.IsInterface && !p.IsAbstract && type.IsAssignableFrom(p));
+            return ImplementationsAssemblies.SelectMany(s => s.GetLoadableTypes())
+                                            .FirstOrDefault(p => !p.IsGenericType && !p.IsInterface && !p.IsAbstract && type.IsAssignableFrom(p));
         }
 
         /// <summary>
-        /// Enregistre l'implémentation du type donné dans la collection de service
+        /// Register concrete implementation of type in the service collection.
         /// </summary>
         /// <param name="type"></param>
         /// <param name="lifetime"></param>
@@ -162,5 +180,6 @@ namespace IOC
 
             }
         }
+
     }
 }

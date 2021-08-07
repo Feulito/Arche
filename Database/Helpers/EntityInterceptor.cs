@@ -27,19 +27,23 @@ namespace Database.Helpers
                     ProxyResolvedAttribute proxyResolvedAttribute = GetProxyResolvedAttribute(property);
                     string id = invocation.TargetType.GetProperty(proxyResolvedAttribute.IdPropertyName)
                         ?.GetValue(invocation.InvocationTarget) as string;
-                    string proxyId = $"{id}_{property.PropertyType.Name}";
-                    if (!ProxyfiedElements.ContainsKey(proxyId))
+                    if (!string.IsNullOrWhiteSpace(id))
                     {
-                        object value = FindById(property.PropertyType, id);
-                        value = typeof(ProxyMappingHelper<>).MakeGenericType(property.PropertyType)
-                            .GetMethod("CreateEntityProxy")?.Invoke(null, parameters: new object[] { value, this });
+                        string proxyId = $"{id}_{property.PropertyType.Name}";
+                        if (!ProxyfiedElements.ContainsKey(proxyId))
+                        {
+                            object value = FindById(property.PropertyType, id);
+                            value = typeof(ProxyMappingHelper<>).MakeGenericType(property.PropertyType)
+                                .GetMethod("CreateEntityProxy")?.Invoke(null, parameters: new object[] { value, this });
 
-                        property.SetValue(invocation.InvocationTarget, value);
+                            property.SetValue(invocation.InvocationTarget, value);
+                        }
+                        else
+                        {
+                            property.SetValue(invocation.InvocationTarget, ProxyfiedElements[proxyId]);
+                        }
                     }
-                    else
-                    {
-                        property.SetValue(invocation.InvocationTarget, ProxyfiedElements[proxyId]);
-                    }
+
                 }
             }
             invocation.Proceed();
@@ -55,9 +59,11 @@ namespace Database.Helpers
         }
         private static object FindById(Type t, string id)
         {
+
             object dao = Container.Resolve(typeof(AbstractDao<>).MakeGenericType(t));
             object task = dao.GetType().GetMethod("GetByIdAsync")?.Invoke(dao, parameters: new object[] { id });
             return task?.GetType().GetProperty("Result")?.GetValue(task);
         }
+
     }
 }

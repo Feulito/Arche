@@ -20,8 +20,8 @@ namespace Web
 
             if (clear)
             {
-                await userDao.DeleteAsync(await userDao.ListAllAsync());
                 await articleDao.DeleteAsync(await articleDao.ListAllAsync());
+                await userDao.DeleteAsync(await userDao.ListAllAsync());
             }
 
             if ((await userDao.ListAllAsync()).Any()) return;

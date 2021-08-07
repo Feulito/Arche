@@ -33,8 +33,7 @@ namespace Core.Services.Implementations
                 AuteurId = articleFormData.AuteurId
             };
 
-            await _articleDao.AddAsync(article);
-            return article;
+            return await _articleDao.AddAsync(article);
         }
 
         private void CheckArticleFormDataInfos(AddArticleFormData articleFormData)
@@ -48,7 +47,16 @@ namespace Core.Services.Implementations
 
         public async Task<Article> GetArticleById(string articleId)
         {
-            return await _articleDao.GetByIdAsync(articleId);
+            ISpecification<Article> spec = new Specification<Article>()
+            {
+                Criteria = a => !a.Deleted && a.Id == articleId,
+                IncludeExpressions = new List<System.Linq.Expressions.Expression<Func<Article, object>>>()
+                {
+                    a => a.Auteur
+                }
+            };
+
+            return await _articleDao.FirstOrDefaultAsync(spec);
         }
 
         public async Task<List<Article>> GetArticles()

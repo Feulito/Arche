@@ -1,7 +1,9 @@
-﻿using Core.Entities.Site;
+﻿using Core.Entities;
+using Core.Entities.Site;
 using Core.Exceptions;
 using Core.Models.FormData;
 using Core.Services.Interfaces;
+using Core.Utils;
 using Database;
 using IOC;
 using IOC.Data.Interfaces;
@@ -20,6 +22,9 @@ namespace Test.TestServices
     public class TestArticleService
     {
         private static IArticleService _articleService;
+        private static IUserService _userService;
+
+        private static User Auteur { get; set; }
 
         [ClassInitialize]
         public static void Init(TestContext context)
@@ -28,6 +33,16 @@ namespace Test.TestServices
             Container.RegisterAllTypes(ServiceLifetime.Transient);
             Article article = new Article(); // Nécéssite un premier appel pour que sont implémentation de la DAO soit disponible dans les services du container
             _articleService = Container.Resolve<IArticleService>();
+            _userService = Container.Resolve<IUserService>();
+            HashObject hashObject = HasherUtility.Hash("test");
+            Auteur = new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            };
+            _userService.AddUser(Auteur);
         }
 
         [TestCleanup]
@@ -35,6 +50,17 @@ namespace Test.TestServices
         {
             IAsyncDao<Article> articleDao = Container.Resolve<IAsyncDao<Article>>();
             await articleDao.DeleteAsync(await articleDao.ListAllAsync());
+            IAsyncDao<User> userDao = Container.Resolve<IAsyncDao<User>>();
+            await userDao.DeleteAsync(await userDao.ListAllAsync());
+        }
+
+        [ClassCleanup]
+        public static async Task CleanUp()
+        {
+            IAsyncDao<Article> articleDao = Container.Resolve<IAsyncDao<Article>>();
+            await articleDao.DeleteAsync(await articleDao.ListAllAsync());
+            IAsyncDao<User> userDao = Container.Resolve<IAsyncDao<User>>();
+            await userDao.DeleteAsync(await userDao.ListAllAsync());
         }
 
         [TestMethod]
@@ -52,11 +78,11 @@ namespace Test.TestServices
                 Title = "Un titre",
                 HeaderUrl = "https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png",
                 Content = "<p>Voici un paragraphe de mon article !</p>",
-                AuteurId = "unId"
+                AuteurId = Auteur.Id
             };
             Article newArticle = await _articleService.AddArticle(article);
             Assert.IsNotNull(newArticle);
-            Assert.AreEqual("unId", newArticle.AuteurId);
+            Assert.AreEqual(Auteur.Id, article.AuteurId);
             Assert.AreEqual("Un titre", newArticle.Title);
             Assert.AreEqual("https://www.publicdomainpictures.net/pictures/320000/velka/background-image.png", newArticle.HeaderUrl);
             Assert.AreEqual("<p>Voici un paragraphe de mon article !</p>", newArticle.Content);
@@ -64,7 +90,8 @@ namespace Test.TestServices
             Article dbArticle = await _articleService.GetArticleById(newArticle.Id);
             Assert.IsNotNull(dbArticle);
             Assert.AreEqual(newArticle.Id, dbArticle.Id);
-            Assert.AreEqual(newArticle.AuteurId, dbArticle.AuteurId);
+            Assert.AreEqual(newArticle.AuteurId, Auteur.Id);
+            Assert.IsNotNull(dbArticle.Auteur);
             Assert.AreEqual(newArticle.Title, dbArticle.Title);
             Assert.AreEqual(newArticle.HeaderUrl, dbArticle.HeaderUrl);
             Assert.AreEqual(newArticle.Content, dbArticle.Content);
@@ -82,7 +109,7 @@ namespace Test.TestServices
                     Title = $"Article {i}",
                     HeaderUrl = $"Header {i}",
                     Content = $"Content {i}",
-                    AuteurId = $"Auteur {i}"
+                    AuteurId = Auteur.Id
                 };
                 await _articleService.AddArticle(article);
             }
@@ -96,7 +123,8 @@ namespace Test.TestServices
                 Assert.AreEqual($"Article {i}", articles[i].Title);
                 Assert.AreEqual($"Header {i}", articles[i].HeaderUrl);
                 Assert.AreEqual($"Content {i}", articles[i].Content);
-                Assert.AreEqual($"Auteur {i}", articles[i].AuteurId);
+                Assert.AreEqual(Auteur.Id, articles[i].AuteurId);
+                Assert.IsNotNull(articles[i].Auteur);
                 Assert.IsFalse(articles[i].Deleted);
             }
         }
@@ -111,7 +139,7 @@ namespace Test.TestServices
                     Title = $"Article {i}",
                     HeaderUrl = $"Header {i}",
                     Content = $"Content {i}",
-                    AuteurId = $"Auteur {i}"
+                    AuteurId = Auteur.Id
                 };
                 await _articleService.AddArticle(article);
             }
@@ -124,7 +152,8 @@ namespace Test.TestServices
                 Assert.AreEqual($"Article {i}", articles[i].Title);
                 Assert.AreEqual($"Header {i}", articles[i].HeaderUrl);
                 Assert.AreEqual($"Content {i}", articles[i].Content);
-                Assert.AreEqual($"Auteur {i}", articles[i].AuteurId);
+                Assert.AreEqual(Auteur.Id, articles[i].AuteurId);
+                Assert.IsNotNull(articles[i].Auteur);
                 Assert.IsFalse(articles[i].Deleted);
             }
         }

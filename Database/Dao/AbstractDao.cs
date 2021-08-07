@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore.ChangeTracking;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -20,6 +21,11 @@ namespace Database.Dao
         public AbstractDao(ArcheDbContext dbContext)
         {
             _dbContext = dbContext;
+        }
+
+        public async Task<T> FirstOrDefaultAsync(ISpecification<T> spec)
+        {
+            return await ProxyMappingHelper<T>.CreateEntityProxyAsync(await ApplySpecification(spec).FirstOrDefaultAsync(), Interceptor);
         }
 
         public async Task<T> AddAsync(T entity)
@@ -47,9 +53,39 @@ namespace Database.Dao
             await DeleteAsync(await ListAsync(spec));
         }
 
+        public async Task DeleteAsync(Expression<Func<T, bool>> criteria)
+        {
+            await DeleteAsync(new Specification<T>()
+            {
+                Criteria = criteria
+            });
+
+        }
+
         public async Task<int> CountAsync(ISpecification<T> spec)
         {
             return await ApplySpecification(spec).CountAsync();
+        }
+
+        public async Task<int> CountAsync(Expression<Func<T, bool>> criteria)
+        {
+            return await CountAsync(new Specification<T>()
+            {
+                Criteria = criteria
+            });
+        }
+
+        public async Task<bool> AnyAsync(ISpecification<T> spec)
+        {
+            return await ApplySpecification(spec).AnyAsync();
+        }
+
+        public async Task<bool> AnyAsync(Expression<Func<T, bool>> criteria)
+        {
+            return await AnyAsync(new Specification<T>()
+            {
+                Criteria = criteria
+            });
         }
 
         public async Task UpdateAsync(IEnumerable<T> entities)
@@ -103,7 +139,8 @@ namespace Database.Dao
 
         public async Task<IReadOnlyList<T>> ListAsync(ISpecification<T> spec)
         {
-            return await ProxyMappingHelper<T>.CreateEntityProxiesAsync(await ApplySpecification(spec).ToListAsync(), Interceptor);
+            List<T> elements = await ApplySpecification(spec).ToListAsync();
+            return await ProxyMappingHelper<T>.CreateEntityProxiesAsync(elements, Interceptor);
         }
 
         public async Task UpdateAsync(T entity)
@@ -120,5 +157,7 @@ namespace Database.Dao
         {
             return SpecificationEvaluator<T>.GetQuery(_dbContext.Set<T>(), spec);
         }
+
+
     }
 }

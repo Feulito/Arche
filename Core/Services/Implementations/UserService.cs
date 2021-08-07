@@ -26,8 +26,7 @@ namespace Core.Services.Implementations
         {
             await CheckUserInfos(user);
             User userDb = await GetUserByNameAndMail(user.UserName, user.Email);
-            await _userDao.AddAsync(user);
-            return user;
+            return await _userDao.AddAsync(user);
         }
 
         public async Task<User> GetUserById(string userId)

@@ -1,7 +1,10 @@
-﻿using System;
+﻿using IOC.Attributes;
+using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace Core.Entities.Site
@@ -15,5 +18,10 @@ namespace Core.Entities.Site
         public string HeaderUrl { get; set; }
         public string Content { get; set; }
         public string AuteurId { get; set; }
+
+        [JsonIgnore]
+        [ForeignKey("AuteurId")]
+        [ProxyResolved("AuteurId")]
+        public virtual User Auteur { get; set; }
     }
 }

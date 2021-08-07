@@ -9,13 +9,65 @@ using System.Threading.Tasks;
 
 namespace Database.Helpers
 {
-    internal static class ProxyMappingHelper<T> where T : class, IEntity
+    internal static class ProxyMappingHelper<TM> where TM : class, IEntity
     {
-        private static readonly List<PropertyInfo> _properties = typeof(T).GetProperties().Where(p => !typeof(IEntity).IsAssignableFrom(p.PropertyType) && !typeof(IEnumerable<IEntity>).IsAssignableFrom(p.PropertyType)).ToList();
-        private static readonly List<PropertyInfo> _entityProperties = typeof(T).GetProperties().Where(p => typeof(IEntity).IsAssignableFrom(p.PropertyType)).ToList();
-        private static readonly List<PropertyInfo> _entityListProperties = typeof(T).GetProperties().Where(p => typeof(IEnumerable<IEntity>).IsAssignableFrom(p.PropertyType)).ToList();
+        private static readonly List<PropertyInfo> _properties = typeof(TM).GetProperties().Where(p => !typeof(IEntity).IsAssignableFrom(p.PropertyType) && !typeof(IEnumerable<IEntity>).IsAssignableFrom(p.PropertyType)).ToList();
+        private static readonly List<PropertyInfo> _entityProperties = typeof(TM).GetProperties().Where(p => typeof(IEntity).IsAssignableFrom(p.PropertyType)).ToList();
+        private static readonly List<PropertyInfo> _entityListProperties = typeof(TM).GetProperties().Where(p => typeof(IEnumerable<IEntity>).IsAssignableFrom(p.PropertyType)).ToList();
 
-        public static T Map(T parent, T child, bool mapEntities = false, EntityInterceptor interceptor = null)
+        public static TM Map(Type type, TM parent, TM child, bool mapEntities = false, EntityInterceptor interceptor = null)
+        {
+            List<PropertyInfo> properties = type.GetProperties().Where(p => !typeof(IEntity).IsAssignableFrom(p.PropertyType) && !typeof(IEnumerable<IEntity>).IsAssignableFrom(p.PropertyType)).ToList();
+            List<PropertyInfo> entityProperties = type.GetProperties().Where(p => typeof(IEntity).IsAssignableFrom(p.PropertyType)).ToList();
+            List<PropertyInfo> entityListProperties = type.GetProperties().Where(p => typeof(IEnumerable<IEntity>).IsAssignableFrom(p.PropertyType)).ToList();
+
+
+            foreach (PropertyInfo propertyInfo in properties)
+            {
+                propertyInfo?.SetValue(child, propertyInfo.GetValue(parent));
+            }
+
+            if (!mapEntities) return child;
+
+            if (parent.GetType().Assembly != Assembly.GetAssembly(typeof(IInterceptor)))
+            {
+                foreach (PropertyInfo propertyInfo in entityProperties)
+                {
+                    object value = propertyInfo.GetValue(parent);
+
+                    if (value != null)
+                    {
+                        value = typeof(ProxyMappingHelper<>).MakeGenericType(propertyInfo.PropertyType).GetMethod("CreateEntityProxy")?.Invoke(null, parameters: new object[] { value, interceptor });
+                    }
+                    propertyInfo?.SetValue(child, value);
+                }
+
+                foreach (PropertyInfo propertyInfo in entityListProperties)
+                {
+                    object value = propertyInfo.GetValue(parent);
+                    if (value != null)
+                    {
+                        value = typeof(ProxyMappingHelper<>).MakeGenericType(propertyInfo.PropertyType.GenericTypeArguments[0]).GetMethod("CreateEntityProxies")?.Invoke(null, parameters: new object[] { value, interceptor });
+                    }
+                    propertyInfo?.SetValue(child, value);
+                }
+            }
+            else
+            {
+                foreach (PropertyInfo propertyInfo in entityProperties)
+                {
+                    propertyInfo?.SetValue(child, propertyInfo.GetValue(parent));
+                }
+
+                foreach (PropertyInfo propertyInfo in entityListProperties)
+                {
+                    propertyInfo?.SetValue(child, propertyInfo.GetValue(parent));
+                }
+            }
+
+            return child;
+        }
+        public static TM Map(TM parent, TM child, bool mapEntities = false, EntityInterceptor interceptor = null)
         {
             foreach (PropertyInfo propertyInfo in _properties)
             {
@@ -61,42 +113,60 @@ namespace Database.Helpers
 
             return child;
         }
-        public static async Task<T> CreateEntityProxyAsync(T entity, EntityInterceptor interceptor)
+        public static async Task<TM> CreateEntityProxyAsync(TM entity, EntityInterceptor interceptor)
         {
             if (entity == null) return null;
-            Task<T> task = new(() => CreateEntityProxy(entity, interceptor));
+            Task<TM> task = new(() => CreateEntityProxy(entity, interceptor));
             task.Start();
             return await task;
         }
-        public static async Task<IReadOnlyList<T>> CreateEntityProxiesAsync(IEnumerable<T> entities, EntityInterceptor interceptor)
+        public static async Task<IReadOnlyList<TM>> CreateEntityProxiesAsync(IEnumerable<TM> entities, EntityInterceptor interceptor)
         {
-            List<T> entitiesList = entities.ToList();
-            List<Task<T>> result = entitiesList.Select(entity => CreateEntityProxyAsync(entity, interceptor)).ToList();
+            List<TM> entitiesList = entities.ToList();
+            List<Task<TM>> result = entitiesList.Select(entity => CreateEntityProxyAsync(entity, interceptor)).ToList();
 
             await Task.WhenAll(result);
             return result.Select(r => r.Result).ToList();
         }
-        public static List<T> CreateEntityProxies(IEnumerable<T> entities, EntityInterceptor interceptor)
+        public static List<TM> CreateEntityProxies(IEnumerable<TM> entities, EntityInterceptor interceptor)
         {
-            List<T> result = entities.Select(entity => CreateEntityProxy(entity, interceptor)).ToList();
+            List<TM> result = entities.Select(entity => CreateEntityProxy(entity, interceptor)).ToList();
 
             return result;
         }
-        public static T CreateEntityProxy(T entity, EntityInterceptor interceptor)
+        public static TM CreateEntityProxy(TM entity, EntityInterceptor interceptor)
         {
-            if (entity == null) return null;
 
-            string proxyId = $"{entity.Id}_{entity.GetType().Name}";
+            Type t = entity?.GetType() ?? typeof(TM);
+
+            string proxyId = $"{entity.Id}_{t.Name}";
+
+            if (entity is IProxyTargetAccessor)
+            {
+                interceptor.ProxyfiedElements[proxyId] = entity;
+            }
 
             if (interceptor.ProxyfiedElements.ContainsKey(proxyId))
-                return interceptor.ProxyfiedElements[proxyId] as T;
+                return interceptor.ProxyfiedElements[proxyId] as TM;
 
-            T proxy = interceptor.ProxyGenerator.CreateClassProxy<T>(interceptor);
+
+            MethodInfo createClassProxy = typeof(ProxyGenerator).GetMethod("CreateClassProxy", new Type[] { typeof(IInterceptor[]) });
+
+            TM proxy = createClassProxy.MakeGenericMethod(new Type[] { t }).Invoke(interceptor.ProxyGenerator, new object[] { new IInterceptor[] { interceptor } }) as TM;
+
             interceptor.ProxyfiedElements[proxyId] = proxy;
-            Map(entity, proxy, true, interceptor);
+            Type baseType = t.BaseType;
+
+            while (baseType != null && !baseType.IsAbstract)
+            {
+                interceptor.ProxyfiedElements[$"{entity.Id}_{baseType.Name}"] = proxy;
+                baseType = baseType.BaseType;
+            }
+            Map(t, entity, proxy, true, interceptor);
 
             return proxy;
 
         }
     }
+
 }
