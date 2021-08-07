@@ -91,7 +91,6 @@ namespace Test.TestServices
             Assert.IsNotNull(dbArticle);
             Assert.AreEqual(newArticle.Id, dbArticle.Id);
             Assert.AreEqual(newArticle.AuteurId, Auteur.Id);
-            Assert.IsNotNull(dbArticle.Auteur);
             Assert.AreEqual(newArticle.Title, dbArticle.Title);
             Assert.AreEqual(newArticle.HeaderUrl, dbArticle.HeaderUrl);
             Assert.AreEqual(newArticle.Content, dbArticle.Content);
@@ -124,7 +123,6 @@ namespace Test.TestServices
                 Assert.AreEqual($"Header {i}", articles[i].HeaderUrl);
                 Assert.AreEqual($"Content {i}", articles[i].Content);
                 Assert.AreEqual(Auteur.Id, articles[i].AuteurId);
-                Assert.IsNotNull(articles[i].Auteur);
                 Assert.IsFalse(articles[i].Deleted);
             }
         }
@@ -153,7 +151,6 @@ namespace Test.TestServices
                 Assert.AreEqual($"Header {i}", articles[i].HeaderUrl);
                 Assert.AreEqual($"Content {i}", articles[i].Content);
                 Assert.AreEqual(Auteur.Id, articles[i].AuteurId);
-                Assert.IsNotNull(articles[i].Auteur);
                 Assert.IsFalse(articles[i].Deleted);
             }
         }
