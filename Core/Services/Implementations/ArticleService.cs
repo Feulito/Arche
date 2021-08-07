@@ -63,7 +63,11 @@ namespace Core.Services.Implementations
         {
             ISpecification<Article> spec = new Specification<Article>()
             {
-                Criteria = a => !a.Deleted
+                Criteria = a => !a.Deleted,
+                IncludeExpressions = new List<System.Linq.Expressions.Expression<Func<Article, object>>>()
+                {
+                    a => a.Auteur
+                }
             };
             return (await _articleDao.ListAsync(spec)).ToList();
         }
@@ -75,7 +79,11 @@ namespace Core.Services.Implementations
                 Criteria = a => !a.Deleted,
                 Take = nbArticles,
                 OrderBy = a => a.Creation,
-                IsPagingEnabled = true
+                IsPagingEnabled = true,
+                IncludeExpressions = new List<System.Linq.Expressions.Expression<Func<Article, object>>>()
+                {
+                    a => a.Auteur
+                }
             };
             return (await _articleDao.ListAsync(spec)).ToList();
         }
