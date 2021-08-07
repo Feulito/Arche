@@ -37,7 +37,7 @@
                 </button>
                 <div class="navbar-collapse collapse">
                     <ul class="navbar-nav ml-auto">
-                        @RenderSection("Navigation", true)
+                        @RenderSection("Navigation", true);
                     </ul>
                 </div>
             </div>
@@ -196,12 +196,10 @@
                     <div class="col-md-4">
                         <p>© 2021 ArcheRP - Tous droits réservés.</p>
                     </div>
-
-                    <div class="col-md-4">
-                        @RenderSection("LiensUtiles", false)
+                    <div class="col-md-4 text-center">
+                        @RenderSection("LiensAdmin", false)
                     </div>
-
-                    <div class="col-md-4 text-right">
+                    <div class="col-md-4 text-right ml-auto">
                         <p>Développé par Feulito - Thème réalisé par l'Arche.</p>
                     </div>
                 </div>

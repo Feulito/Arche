@@ -10,7 +10,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Web.Helpers;
-using Web.Models.Site;
+using Web.Models;
 
 namespace Web.Controllers
 {
@@ -30,7 +30,7 @@ namespace Web.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            await DataInitializer.Initialize(clear: false);
+            await DataInitializer.Initialize(false);
             UserViewModel user = User.Identity.IsAuthenticated ? await ConnectionHelper.GetRights(User, _userService) : null;
 
             List<ArticleViewModel> articles = MapperUtility.Map<Article, ArticleViewModel>((await _articleService.GetArticles(NbArticles)).OrderBy(a => a.Creation));

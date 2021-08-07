@@ -11,7 +11,7 @@ using System.Linq;
 using System.Security.Authentication;
 using System.Security.Claims;
 using System.Threading.Tasks;
-using Web.Models.Site;
+using Web.Models;
 
 namespace Web.Controllers
 {

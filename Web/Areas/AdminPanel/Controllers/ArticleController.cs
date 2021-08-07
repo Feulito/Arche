@@ -12,21 +12,28 @@ using Web.Helpers;
 namespace Web.Areas.AdminPanel.Controllers
 {
     [Area("AdminPanel")]
-    public class IndexController : Controller
+    public class ArticleController : Controller
     {
         private readonly IUserService _userService;
 
-        public IndexController(IUserService userService)
+        public ArticleController(IUserService userService)
         {
             _userService = userService;
         }
 
         [Authorize]
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
+        {
+            return RedirectToAction("NewArticle");
+        }
+
+        [Authorize]
+        public async Task<IActionResult> NewArticle()
         {
             UserViewModel user = await ConnectionHelper.GetRights(User, _userService);
             if (user == null || !user.IsAtLeastAdmin()) return Redirect("/Index");
-            return View(new IndexViewModel() { User = user });
+            return View(new ArticlePageViewModel() { User = user });
         }
+
     }
 }

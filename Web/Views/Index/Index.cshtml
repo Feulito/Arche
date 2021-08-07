@@ -1,4 +1,4 @@
-﻿@model Web.Models.Site.IndexViewModel
+﻿@model IndexViewModel
 @{
 
 }
@@ -7,7 +7,7 @@
     @if (@Model.UserAuthenticated)
     {
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">Mon profil</a>
+            <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">@Model.User.UserName</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-white custom-nav-link" href="/Login/Logout">Déconnexion</a>
@@ -68,7 +68,7 @@
     </div>
 </div>
 
-@section LiensUtiles {
+@section LiensAdmin {
     @if (Model?.User?.IsAtLeastAdmin() ?? false)
     {
         <li class="list-inline-item">
