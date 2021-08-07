@@ -7,7 +7,7 @@
     @if (@Model.UserAuthenticated)
     {
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">Profil</a>
+            <a class="nav-link text-white custom-nav-link" href="/Profile/MyProfile?id=@Model.User.Id">Profil</a>
         </li>
         <li class="nav-item">
             <a class="nav-link text-white custom-nav-link" href="/Login/Logout">Déconnexion</a>
@@ -16,10 +16,10 @@
     else
     {
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Login/">Connexion</a>
+            <a class="nav-link text-white custom-nav-link" href="/Login/Index">Connexion</a>
         </li>
         <li class="nav-item">
-            <a class="nav-link text-white custom-nav-link" href="/Register/">Inscription</a>
+            <a class="nav-link text-white custom-nav-link" href="/Register/Index">Inscription</a>
         </li>
     }
 }
