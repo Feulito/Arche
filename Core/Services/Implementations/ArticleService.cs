@@ -50,9 +50,8 @@ namespace Core.Services.Implementations
             ISpecification<Article> spec = new Specification<Article>()
             {
                 Criteria = a => !a.Deleted && a.Id == articleId,
-                IncludeExpressions = new List<System.Linq.Expressions.Expression<Func<Article, object>>>()
-                {
-                    a => a.Auteur
+                IncludeStrings = new List<string>() {
+                    "Auteur"
                 }
             };
 
@@ -64,9 +63,8 @@ namespace Core.Services.Implementations
             ISpecification<Article> spec = new Specification<Article>()
             {
                 Criteria = a => !a.Deleted,
-                IncludeExpressions = new List<System.Linq.Expressions.Expression<Func<Article, object>>>()
-                {
-                    a => a.Auteur
+                IncludeStrings = new List<string>() {
+                    "Auteur"
                 }
             };
             return (await _articleDao.ListAsync(spec)).ToList();
@@ -80,9 +78,8 @@ namespace Core.Services.Implementations
                 Take = nbArticles,
                 OrderBy = a => a.Creation,
                 IsPagingEnabled = true,
-                IncludeExpressions = new List<System.Linq.Expressions.Expression<Func<Article, object>>>()
-                {
-                    a => a.Auteur
+                IncludeStrings = new List<string>() {
+                    "Auteur"
                 }
             };
             return (await _articleDao.ListAsync(spec)).ToList();
