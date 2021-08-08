@@ -16,5 +16,7 @@ namespace Core.Services.Interfaces
         Task<User> GetUserByNameAndMail(string userName, string Email);
         Task<User> GetUserByMail(string email);
         Task<User> SignIn(string email, string pass);
+        Task DeleteById(string userId);
+        Task Delete(User user);
     }
 }

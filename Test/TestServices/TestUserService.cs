@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Enums;
 using Core.Exceptions;
 using Core.Models.FormData;
 using Core.Services.Interfaces;
@@ -63,6 +64,62 @@ namespace Test.TestServices
             Assert.AreEqual(user.UserName, userDb.UserName);
             Assert.AreEqual(user.Password, userDb.Password);
             Assert.AreEqual(user.Salt, userDb.Salt);
+        }
+
+        [TestMethod]
+        public async Task TestDeleteUserById()
+        {
+            HashObject hashObject = HasherUtility.Hash("test");
+            User user = await _userService.AddUser(new User()
+            {
+                UserName = "user",
+                Email = "user@arche-rp.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            });
+            Assert.IsNotNull(await _userService.GetUserById(user.Id));
+            await _userService.DeleteById(user.Id);
+            Assert.IsNull(await _userService.GetUserById(user.Id));
+
+            user = await _userService.AddUser(new User()
+            {
+                UserName = "superAdmin",
+                Email = "superadmin@arche-rp.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt,
+                ProfileType = EProfileType.SuperAdmin
+            });
+            Assert.IsNotNull(await _userService.GetUserById(user.Id));
+            await Assert.ThrowsExceptionAsync<UserServiceException>(async () => await _userService.DeleteById(user.Id), "Impossible de supprimer un Super-Administrateur");
+            Assert.IsNotNull(await _userService.GetUserById(user.Id));
+        }
+
+        [TestMethod]
+        public async Task TestDeleteUser()
+        {
+            HashObject hashObject = HasherUtility.Hash("test");
+            User user = await _userService.AddUser(new User()
+            {
+                UserName = "user",
+                Email = "user@arche-rp.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            });
+            Assert.IsNotNull(await _userService.GetUserById(user.Id));
+            await _userService.Delete(user);
+            Assert.IsNull(await _userService.GetUserById(user.Id));
+
+            user = await _userService.AddUser(new User()
+            {
+                UserName = "superAdmin",
+                Email = "superadmin@arche-rp.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt,
+                ProfileType = EProfileType.SuperAdmin
+            });
+            Assert.IsNotNull(await _userService.GetUserById(user.Id));
+            await Assert.ThrowsExceptionAsync<UserServiceException>(async () => await _userService.Delete(user), "Impossible de supprimer un Super-Administrateur");
+            Assert.IsNotNull(await _userService.GetUserById(user.Id));
         }
 
         [TestMethod]

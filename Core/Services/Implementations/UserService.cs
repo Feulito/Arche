@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Enums;
 using Core.Exceptions;
 using Core.Services.Interfaces;
 using Core.Utils;
@@ -70,6 +71,18 @@ namespace Core.Services.Implementations
             User user = await GetUserByMail(email);
             if (user == null || string.IsNullOrWhiteSpace(pass) || !HasherUtility.CheckHash(pass, user.Password, user.Salt)) throw new AuthenticationException("Identifiants incorrects.");
             return user;
+        }
+
+        public async Task DeleteById(string userId)
+        {
+            await Delete(await _userDao.GetByIdAsync(userId));
+        }
+
+        public async Task Delete(User user)
+        {
+            if (user.ProfileType == EProfileType.SuperAdmin) throw new UserServiceException("Impossible de supprimer un Super-Administrateur");
+            user.Deleted = true;
+            await _userDao.UpdateAsync(user);
         }
     }
 }
