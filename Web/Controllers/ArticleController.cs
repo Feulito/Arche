@@ -26,14 +26,14 @@ namespace Web.Controllers
         }
 
         [HttpGet]
-        [Authorize]
+        [AllowAnonymous]
         public async Task<IActionResult> Index(string articleId)
         {
-            UserViewModel user = await ConnectionHelper.GetRights(User, _userService);
-            if (user == null) return RedirectToActionPermanent("Index", "Index");
+            UserViewModel user = User.Identity.IsAuthenticated ? await ConnectionHelper.GetRights(User, _userService) : null;
 
             ArticleViewModel articleViewModel = MapperUtility.Map(await _articleService.GetArticleById(articleId), new ArticleViewModel());
-            if (articleViewModel.Content.Contains("<script")) throw new ArticleServiceException("Pour des raisons de sécurité le code javascript n'est pas autorisé dans les articles !");
+            if (articleViewModel.Content.Contains("<script")) return ValidationProblem("Pour des raisons de sécurité le code javascript n'est pas autorisé dans les articles !");
+
             ArticlePageViewModel viewModel = new ArticlePageViewModel()
             {
                 Article = articleViewModel,

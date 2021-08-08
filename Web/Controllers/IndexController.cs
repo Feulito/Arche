@@ -33,9 +33,9 @@ namespace Web.Controllers
             await DataInitializer.Initialize(false);
             UserViewModel user = User.Identity.IsAuthenticated ? await ConnectionHelper.GetRights(User, _userService) : null;
 
-            List<ArticleViewModel> articles = MapperUtility.Map<Article, ArticleViewModel>((await _articleService.GetArticles(NbArticles)).OrderBy(a => a.Creation));
+            List<ArticleViewModel> articles = MapperUtility.Map<Article, ArticleViewModel>(await _articleService.GetArticles(NbArticles));
             IndexViewModel viewModel = new IndexViewModel() {
-                Articles = articles,
+                Articles = articles.OrderByDescending(a => a.Creation).ToList(),
                 User = user
             };
             return View(viewModel);

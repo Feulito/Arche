@@ -43,6 +43,7 @@ namespace Core.Services.Implementations
             if (string.IsNullOrWhiteSpace(articleFormData.Content)) throw new ArticleServiceException("Un article doit avoir un contenu.");
             if (string.IsNullOrWhiteSpace(articleFormData.HeaderUrl)) throw new ArticleServiceException("Un article doit avoir une image d'entête.");
             if (string.IsNullOrWhiteSpace(articleFormData.Title)) throw new ArticleServiceException("Un article doit avoir un Titre.");
+            if (articleFormData.Content.Contains("<script")) throw new ArticleServiceException("Pour des raisons de sécurité le code javascript n'est pas autorisé dans les articles !");
         }
 
         public async Task<Article> GetArticleById(string articleId)

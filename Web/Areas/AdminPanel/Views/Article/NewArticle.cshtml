@@ -26,17 +26,26 @@
         Tous les champs sont obligatoires. L'en-tête étant affichée sur la page d'accueil.
     </p>
 
+    @if (Model.CreationArticleFailed)
+    {
+        <div class="alert alert-danger">
+            <h4>Erreur lors de la création de l'article</h4>
+            <p>@Model.ErrorMessage</p>
+        </div>
+    }
 
-    <form method="post" action="/Article/NewArticle">
+    <form method="post" action="/AdminPanel/Article/NewArticle">
+        <input type="hidden" name="auteurId" value="@Model.User.Id" />
+
         <div class="container">
             <div class="form-group row">
                 <label for="title" class="col-form-label">Titre de l'artice</label>
-                <input type="text" class="form-control" id="title" name="title" required />
+                <input type="text" class="form-control" id="title" name="title" placeholder="Exemple : Dimanche 8 Août - La fête des Dev' commence !" required />
             </div>
 
             <div class="form-group row">
-                <label for="header" class="col-form-label">Adresse de l'image d'en-tête</label>
-                <input type="text" class="form-control" id="header" name="header" required />
+                <label for="headerUrl" class="col-form-label">Adresse de l'image d'en-tête</label>
+                <input type="url" class="form-control" id="headerUrl" name="headerUrl" placeholder="Exemple : http://servimg.fr/img023115632.png" required />
             </div>
 
             <div class="form-group">
@@ -44,6 +53,8 @@
                 <textarea class="form-control textarea-article" id="content" name="content" placeholder="Le contenu de votre article"></textarea>
             </div>
         </div>
+
+        <button type="submit" class="btn btn-primary">Envoyer l'article</button>
     </form>
 </div>
 
