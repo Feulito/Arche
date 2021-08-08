@@ -108,11 +108,24 @@
         <button id="playBtn" class="btn btn-primary" data-toggle="modal" data-target=".bd-example-modal-lg">JOUER</button>
 
     </header>
-    <div class="container">
+
+    <div class="container-fluid">
         <main role="main" class="pb-3">
-            @RenderBody()
+            <div class="row">
+
+                <div class="col-3 p-4 ml-5 mr-2 custom-block fit-content text-white">
+                    <ul class="list-group">
+                        @RenderSection("AdminNavigation", true)
+                    </ul>
+                </div>
+                <div class="col-8 p-4 custom-block fit-content text-white">
+                    @RenderBody()
+                </div>
+
+            </div>
         </main>
     </div>
+    
 
     @*Modal JOUER*@
     <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -160,7 +173,7 @@
                         </p>
                     </div>
                     <div class="col-md-3 links">
-                        <h1>links utiles</h1>
+                        <h1>Liens utiles</h1>
 
                         <p>Les liens utiles du serveurs sont là !</p>
 

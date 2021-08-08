@@ -178,3 +178,7 @@ div.custom-block {
 .textarea-article {
     height: 700px !important;
 }
+
+.fit-content {
+    height: fit-content;
+}

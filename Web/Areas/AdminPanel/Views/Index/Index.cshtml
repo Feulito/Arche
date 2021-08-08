@@ -5,7 +5,7 @@
 
 @section Navigation {
     <li class="nav-item">
-        <a class="nav-link text-white custom-nav-link" href="/Login/Index">Retour au site</a>
+        <a class="nav-link text-white custom-nav-link" href="/AdminPanel/Index/Index">Panneau d'Administration</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">@Model.User.UserName</a>
@@ -15,9 +15,42 @@
     </li>
 }
 
-<div class="text-center">
-    <p>Hello world !</p>
-</div>
+@section AdminNavigation {
+    <li class="list-group-item">
+        <p>Articles</p>
+    </li>
+    <li class="list-group-item">
+        <p>Gestion des utilisateurs</p>
+    </li>
+    <li class="list-group-item">
+        <p>Gestion des pages</p>
+    </li>
+}
+
+<h1>Bienvenue sur le panneau d'administration</h1>
+
+<p>Cette partie est résérvée aux administrateurs uniquement.</p>
+
+<hr />
+
+<h2>Navigation</h2>
+<p>
+    Pour naviguer dans le panneau d'administration, les liens vers toutes les pages sont listées sur la partie gauche.<br />
+    Toute action, comme la création d'un article, sera stockée dans un historique daté ce qui permettra à tous les administrateurs de voir les actions de tous les autres.
+</p>
+
+<hr />
+
+<h2>Compte Super-Administrateur</h2>
+<p>
+    Dans le cas où il n'existe pas, ou plus, d'utilisateur avec les droits d'administration un utilisateur "SuperAdmin" vous est mis à disposition.<br />
+    Ce compte vous permettra de créer d'autres comptes et de gérer ses droits comme tout autre utilisateur.<br /><br />
+    La création ou la suppression d'un compte Super-Administrateur n'est pas possible. Il s'agit d'un compte de secours auquels les développeurs auront accès pour maintenir ou vous aider en cas de problème.<br />
+    Exemple : Il n'y a plus d'utilisateur avec les droits d'administration, ou une mauvaise utilisation du panneau d'administration a entraîné un disfonctionnement du site ou de la base de données.<br /><br />
+    L'accès au compte Super-Administrateur permettra à ceux qui en ont l'accès de corriger les problèmes de façon "propre" et conventionnelle, évitant alors tout autre disfonctionnement (Par exemple la suppression d'un
+    compte qui était Auteur d'un ou plusieurs articles entraînera un bug lors de l'affichage de ces articles. Ou simplement la création d'un utilisateur par le site plutôt que directement en base.).<br />
+    Ses actions seront également listés et datés dans l'historique.
+</p>
 
 @section LiensAdmin {
     <li class="list-inline-item">

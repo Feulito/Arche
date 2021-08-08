@@ -5,7 +5,7 @@
 
 @section Navigation {
     <li class="nav-item">
-        <a class="nav-link text-white custom-nav-link" href="/Login/Index">Retour au site</a>
+        <a class="nav-link text-white custom-nav-link" href="/AdminPanel/Index/Index">Panneau d'Administration</a>
     </li>
     <li class="nav-item">
         <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">@Model.User.UserName</a>
@@ -15,48 +15,59 @@
     </li>
 }
 
-<div class="custom-block">
-    <h1>Ecrire un nouvel article</h1>
-    <p>
-        Pour l'écriture des articles, le code HTML/CSS est autorisé.<br />
-        Afin d'éviter les attaques par injéction, le code JavaScript est interdit.
-    </p>
-    <p>
-        Un éditeur integré sera disponnible dans les prochaines versions du site.<br />
-        Tous les champs sont obligatoires. L'en-tête étant affichée sur la page d'accueil.
-    </p>
+@section AdminNavigation {
+    <li class="list-group-item">
+        <p>Articles</p>
+    </li>
+    <li class="list-group-item">
+        <p>Gestion des utilisateurs</p>
+    </li>
+    <li class="list-group-item">
+        <p>Gestion des pages</p>
+    </li>
+}
 
-    @if (Model.CreationArticleFailed)
-    {
-        <div class="alert alert-danger">
-            <h4>Erreur lors de la création de l'article</h4>
-            <p>@Model.ErrorMessage</p>
+<h1>Ecrire un nouvel article</h1>
+<p>
+    Pour l'écriture des articles, le code HTML/CSS est autorisé.<br />
+    Afin d'éviter les attaques par injéction, le code JavaScript est interdit.
+</p>
+<p>
+    Un éditeur integré sera disponnible dans les prochaines versions du site.<br />
+    Tous les champs sont obligatoires. L'en-tête étant affichée sur la page d'accueil.
+</p>
+
+@if (Model.CreationArticleFailed)
+{
+    <div class="alert alert-danger">
+        <h4>Erreur lors de la création de l'article</h4>
+        <p>@Model.ErrorMessage</p>
+    </div>
+}
+
+<form method="post" action="/AdminPanel/Article/NewArticle">
+    <input type="hidden" name="auteurId" value="@Model.User.Id" />
+
+    <div class="container">
+        <div class="form-group row">
+            <label for="title" class="col-form-label">Titre de l'artice</label>
+            <input type="text" class="form-control" id="title" name="title" placeholder="Exemple : Dimanche 8 Août - La fête des Dev' commence !" required />
         </div>
-    }
 
-    <form method="post" action="/AdminPanel/Article/NewArticle">
-        <input type="hidden" name="auteurId" value="@Model.User.Id" />
-
-        <div class="container">
-            <div class="form-group row">
-                <label for="title" class="col-form-label">Titre de l'artice</label>
-                <input type="text" class="form-control" id="title" name="title" placeholder="Exemple : Dimanche 8 Août - La fête des Dev' commence !" required />
-            </div>
-
-            <div class="form-group row">
-                <label for="headerUrl" class="col-form-label">Adresse de l'image d'en-tête</label>
-                <input type="url" class="form-control" id="headerUrl" name="headerUrl" placeholder="Exemple : http://servimg.fr/img023115632.png" required />
-            </div>
-
-            <div class="form-group">
-                <label for="content" class="col-form-label">Contenu de l'article</label>
-                <textarea class="form-control textarea-article" id="content" name="content" placeholder="Le contenu de votre article"></textarea>
-            </div>
+        <div class="form-group row">
+            <label for="headerUrl" class="col-form-label">Adresse de l'image d'en-tête</label>
+            <input type="url" class="form-control" id="headerUrl" name="headerUrl" placeholder="Exemple : http://servimg.fr/img023115632.png" required />
         </div>
 
-        <button type="submit" class="btn btn-primary">Envoyer l'article</button>
-    </form>
-</div>
+        <div class="form-group">
+            <label for="content" class="col-form-label">Contenu de l'article</label>
+            <textarea class="form-control textarea-article" id="content" name="content" placeholder="Le contenu de votre article"></textarea>
+        </div>
+    </div>
+
+    <button type="submit" class="btn btn-primary">Envoyer l'article</button>
+</form>
+
 
 @section LiensAdmin {
     <li class="list-inline-item">

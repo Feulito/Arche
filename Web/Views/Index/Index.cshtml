@@ -4,8 +4,15 @@
 }
 
 @section Navigation {
-    @if (@Model.UserAuthenticated)
+    @if (Model.UserAuthenticated)
     {
+        @if (Model.User.IsAtLeastAdmin())
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white custom-nav-link" href="/AdminPanel/Index/Index">Panneau d'Administration</a>
+            </li>
+        }
+
         <li class="nav-item">
             <a class="nav-link text-white custom-nav-link" href="/Login/MyProfile?id=@Model.User.Id">@Model.User.UserName</a>
         </li>
