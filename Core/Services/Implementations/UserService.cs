@@ -1,6 +1,7 @@
 ﻿using Core.Entities;
 using Core.Enums;
 using Core.Exceptions;
+using Core.Models.FormData;
 using Core.Services.Interfaces;
 using Core.Utils;
 using IOC.Data.Implementations;
@@ -82,6 +83,28 @@ namespace Core.Services.Implementations
         {
             if (user.ProfileType == EProfileType.SuperAdmin) throw new UserServiceException("Impossible de supprimer un Super-Administrateur");
             user.Deleted = true;
+            await _userDao.UpdateAsync(user);
+        }
+
+        public async Task EditProfile(EditProfilFormData editProfileFormData)
+        {
+            if (editProfileFormData == null || string.IsNullOrWhiteSpace(editProfileFormData.UserId)) return;
+            if (editProfileFormData.Password != editProfileFormData.PasswordConfirm) throw new UserServiceException("Les mots de passes entrés sont différents.");
+            User user = await _userDao.GetByIdAsync(editProfileFormData.UserId);
+            if (user == null) throw new UserServiceException("Impossible d'éditer l'utilisateur.");
+
+            user.UserName = editProfileFormData.UserName;
+
+            if (string.IsNullOrWhiteSpace(editProfileFormData.Password))
+            {
+                await _userDao.UpdateAsync(user);
+                return;
+            }
+
+            HashObject hashObject = HasherUtility.Hash(editProfileFormData.Password);
+            user.Password = hashObject.Hash;
+            user.Salt = hashObject.Salt;
+
             await _userDao.UpdateAsync(user);
         }
     }

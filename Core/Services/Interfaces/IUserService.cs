@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Models.FormData;
 using IOC.Attributes;
 using System;
 using System.Collections.Generic;
@@ -18,5 +19,6 @@ namespace Core.Services.Interfaces
         Task<User> SignIn(string email, string pass);
         Task DeleteById(string userId);
         Task Delete(User user);
+        Task EditProfile(EditProfilFormData editProfileFormData);
     }
 }

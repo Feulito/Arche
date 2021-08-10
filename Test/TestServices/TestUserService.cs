@@ -221,5 +221,36 @@ namespace Test.TestServices
             await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn("sebastienduterte@hotmail.fr", null), "Identifiants incorrects.");
             await Assert.ThrowsExceptionAsync<AuthenticationException>(async () => await _userService.SignIn(null, null), "Identifiants incorrects.");
         }
+
+        [TestMethod]
+        public async Task TestEditUser()
+        {
+            HashObject hashObject = HasherUtility.Hash("test");
+            User feulito = await _userService.AddUser(new User()
+            {
+                UserName = "Feulito",
+                Email = "sebastienduterte@hotmail.fr",
+                Password = hashObject.Hash,
+                Salt = hashObject.Salt
+            });
+
+            User user = await _userService.SignIn("sebastienduterte@hotmail.fr", "test");
+            Assert.IsNotNull(user);
+
+            EditProfilFormData formData = new()
+            {
+                UserId = user.Id,
+                UserName = "change",
+                Password = "1234",
+                PasswordConfirm = "1234"
+            };
+
+            await _userService.EditProfile(formData);
+
+            User userDb = await _userService.GetUserByMail("sebastienduterte@hotmail.fr");
+            Assert.AreEqual(user.Id, userDb.Id);
+            Assert.AreEqual("change", userDb.UserName);
+            Assert.IsTrue(HasherUtility.CheckHash("1234", userDb.Password, userDb.Salt));
+        }
     }
 }
