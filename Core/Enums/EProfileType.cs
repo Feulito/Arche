@@ -20,6 +20,12 @@ namespace Core.Enums
         Admin = 2,
 
         [Description("Super Administrateur")]
-        SuperAdmin = 4
+        SuperAdmin = 4,
+
+        [Description("Support")]
+        Support = 8,
+
+        [Description("Developpeur")]
+        Developper
     }
 }
