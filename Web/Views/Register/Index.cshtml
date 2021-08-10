@@ -23,7 +23,7 @@
         </p>
         <p>Aussi, chaque compte peut posséder plusieurs compte minecraft. Il ne faut donc pas re-créer un compte Arche pour ses autres comptes minecraft.</p>
 
-        @if (Model.RegisterationFailed)
+        @if (Model.HasError)
         {
             <div class="alert-danger text-center">
                 <h4>Erreur de connexion :</h4>

@@ -8,12 +8,10 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class ArticlePageViewModel
+    public class ArticlePageViewModel : AbstractPageViewModel
     {
-        public string Title => Article?.Title ?? "Article";
+        public override string Title => Article?.Title ?? "Article";
         public ArticleViewModel Article { get; set; }
         public User Auteur { get; set; }
-        public UserViewModel User { get; set; }
-        public bool UserAuthenticated => User != null;
     }
 }

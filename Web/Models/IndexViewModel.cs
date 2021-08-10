@@ -6,11 +6,9 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class IndexViewModel
+    public class IndexViewModel : AbstractPageViewModel
     {
-        public string Title => "Arche - Accueil";
+        public override string Title => "Arche - Accueil";
         public List<ArticleViewModel> Articles { get; set; } = new List<ArticleViewModel>();
-        public UserViewModel User { get; set; }
-        public bool UserAuthenticated => User != null;
     }
 }

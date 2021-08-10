@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class RegisterViewModel
+    public class RegisterViewModel : AbstractPageViewModel
     {
-        public string Title = "Arche - S'inscrire";
-        public string ErrorMessage { get; set; }
-        public bool RegisterationFailed => !string.IsNullOrWhiteSpace(ErrorMessage);
+        public override string Title => "Arche - S'inscrire";
     }
 }

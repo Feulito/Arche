@@ -1,4 +1,5 @@
 ﻿using Core.Enums;
+using Core.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,6 +14,17 @@ namespace Core.Models.ViewModels
         public string UserName { get; set; }
         public string Email { get; set; }
         public EProfileType ProfileType { get; set; }
+        public string Role
+        {
+            get
+            {
+                return EnumUtility.GetEnumDescription(ProfileType);
+            }
+            set
+            {
+                return;
+            }
+        }
 
         public bool IsSuperAdmin()
         {

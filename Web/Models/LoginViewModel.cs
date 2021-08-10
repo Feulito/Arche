@@ -5,10 +5,8 @@ using System.Threading.Tasks;
 
 namespace Web.Models
 {
-    public class LoginViewModel
+    public class LoginViewModel : AbstractPageViewModel
     {
-        public string Title => "Connexion";
-        public string ErrorMessage { get; set; }
-        public bool ConnexionFailed => !string.IsNullOrWhiteSpace(ErrorMessage);
+        public override string Title => "Connexion";
     }
 }

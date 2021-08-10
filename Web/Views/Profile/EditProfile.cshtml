@@ -1,0 +1,86 @@
+﻿@model ProfileViewModel
+@{
+    ViewData["Title"] = Model.Title;
+}
+
+@section Navigation {
+    @if (Model.UserAuthenticated)
+    {
+        @if (Model.User.IsAtLeastAdmin())
+        {
+            <li class="nav-item">
+                <a class="nav-link text-white custom-nav-link" href="/AdminPanel/Index/Index">Panneau d'Administration</a>
+            </li>
+        }
+
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Profile/EditProfile?userId=@Model.User.Id">@Model.User.UserName</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Login/Logout">Déconnexion</a>
+        </li>
+    }
+    else
+    {
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Login">Connexion</a>
+        </li>
+        <li class="nav-item">
+            <a class="nav-link text-white custom-nav-link" href="/Register">Inscription</a>
+        </li>
+    }
+}
+
+<div class="custom-block">
+    <h1>Mon profil : @Model.User.UserName</h1>
+
+    <p>
+        Grâce à la configuration de mon profil je peux changer de mot de passe et voir ou modifier mes informations.<br />
+        C'est également ici que je peux configurer mes comptes minecraft et gérer mes personnages.
+    </p>
+    <p>
+        Certaines informations seront publiques, comme mon nom d'utilisateur ou mon avatar.<br />
+        Les informations comme l'adresse E-mail et mon mot de passe sont privés.<br />
+        Il est impossible, pour moi ou toute autre personne de récupérer mon mot de passe.<br />
+        Ainsi, si je l'oublie je devrais faire une demande de changement de mot de passe en cliquant sur "Mot de passe oublié" dans le formulaire de connexion.<br />
+        Cela ouvrira un protocole sécurisé de changement de mot de passe.
+    </p>
+</div>
+
+<form method="post">
+
+    <div class="custom-block pt-2">
+        <h2>Mes informations</h2>
+
+        <div class="form-group row">
+            <label for="username" class="col-2 col-form-label">Nom d'utilisateur</label>
+            <input type="text" class="form-control col-10" id="username" name="username" value="@Model.User.UserName" />
+        </div>
+
+        <div class="form-group row">
+            <label for="role" class="col-2 col-form-label">Rôle</label>
+            <input type="text" class="form-control col-10" id="role" name="role" value="@Model.User.Role" disabled />
+        </div>
+
+        <hr />
+
+        <h2>Changement de mot de passe</h2>
+
+        <div class="form-group row">
+            <label for="passwd" class="col-2 col-form-label">Mot de passe</label>
+            <input type="password" class="form-control col-10" id="passwd" name="passwd" />
+        </div>
+
+        <button class="btn btn-primary" type="submit">Envoyer</button>
+    </div>
+
+</form>
+
+@section LiensAdmin {
+    @if (Model?.User?.IsAtLeastAdmin() ?? false)
+    {
+        <li class="list-inline-item">
+            <a href="/AdminPanel/Index/Index" class="text-white-50">Panneau d'Administration</a>
+        </li>
+    }
+}

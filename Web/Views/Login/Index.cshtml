@@ -17,7 +17,7 @@
 
     <form method="post">
 
-        @if (Model.ConnexionFailed)
+        @if (Model.HasError)
         {
             <div class="alert-danger text-center">
                 <h4>Erreur de connexion :</h4>
